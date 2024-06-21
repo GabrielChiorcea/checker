@@ -1,0 +1,50 @@
+@page "/login"
+@using Checker.Models
+@using Checker.Services
+@inject AuthService AuthService
+
+<PageTitle>Login</PageTitle>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+    private async Task HandleLogin()
+    {
+        try{
+
+           var token =  await AuthService.LoginAsync(loginModel);
+            loginModel = new LoginModel();
+            Console.WriteLine(token?.message);
+        }
+        
+        catch (Exception ex) {
+             Console.WriteLine("Eroare la autentificare: " + ex.Message);
+        }
+    }
+}
+
+
+<div class="col-lg-6 offset-lg-3" >
+    <h1>Login</h1>
+    <div class="row justify-content-center">
+        <EditForm  Model="loginModel" OnValidSubmit="HandleLogin">
+            <DataAnnotationsValidator />
+
+            <div class="mb-3" >
+                <label class="form-label" >Username:</label>
+                <InputText class="form-control"  @bind-Value="loginModel.email" />
+                <ValidationMessage For="() => loginModel.email"/>
+            </div>
+
+            <div class="mb-3" >
+                <label class="form-label" >Password:</label>
+                <InputText class="form-control" @bind-Value="loginModel.password" type="password" />
+                <ValidationMessage For="() => loginModel.password"/>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Login</button>
+
+        </EditForm>
+    </div>
+</div>
+
+
