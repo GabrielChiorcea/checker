@@ -17,7 +17,7 @@ namespace Checker.Services
 
         public async Task<JsonModel> LoginAsync(LoginModel loginModel){
 
-            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:5000/login", loginModel);
+            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/login", loginModel);
             response.EnsureSuccessStatusCode();
              
             var token = await response.Content.ReadFromJsonAsync<JsonModel>();
@@ -25,12 +25,12 @@ namespace Checker.Services
             return token;
         }
 
-        public async Task<string> SingUpAsyc( SingUpModel singUpModel){
+        public async Task<JsonModel> SingUpAsyc( SingUpModel singUpModel){
 
-            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:5000/sing-up", singUpModel);
+            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/sing-up", singUpModel);
             response.EnsureSuccessStatusCode();
 
-            var token = await response.Content.ReadAsStringAsync();
+            var token = await response.Content.ReadFromJsonAsync<JsonModel>();
             return token;
         }
     }

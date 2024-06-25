@@ -7,8 +7,11 @@
 
 @code {
     private LoginModel loginModel = new LoginModel();
+
+    
     private async Task HandleLogin()
     {
+
         try{
 
            var token =  await AuthService.LoginAsync(loginModel);

@@ -1,16 +1,21 @@
 @page "/singup"
-@using Checker.Services;
-@using Checker.Models;
+@using Checker.Services
+@using Checker.Models
 @inject AuthService AuthService
 
 @code{
     private SingUpModel singUpModel = new SingUpModel();
 
-    private async Task HandelSingUp(){
+    private async Task HandelSingUp(){    
+
+    string password = singUpModel.password;
+    string passwordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(password, 4);
+    singUpModel.password = passwordHash;    
+
         try{
             var token = await AuthService.SingUpAsyc(singUpModel);
             singUpModel = new SingUpModel();
-            Console.WriteLine(token);
+            Console.WriteLine(token.message);
         }
         catch (Exception ex){
             Console.WriteLine("Eroare la creare cont: " + ex.Message);
