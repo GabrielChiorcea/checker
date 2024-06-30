@@ -1,6 +1,7 @@
 @page "/singup"
-@using Checker.Services
-@using Checker.Models
+
+@using global::Checker.Services
+@using global::Checker.Models
 @inject AuthService AuthService
 
 @code{
@@ -8,24 +9,21 @@
 
     private async Task HandelSingUp(){    
 
-    string password = singUpModel.password;
-    string passwordHash = BCrypt.Net.BCrypt.EnhancedHashPassword(password, 4);
-    singUpModel.password = passwordHash;    
-
         try{
+            
             var token = await AuthService.SingUpAsyc(singUpModel);
             singUpModel = new SingUpModel();
             Console.WriteLine(token.message);
         }
         catch (Exception ex){
-            Console.WriteLine("Eroare la creare cont: " + ex.Message);
+            Console.WriteLine("Eroare la autentificare: " + ex.Message);
         }
     }
-};    
+}  
 
 
     <div class="col-lg-6 offset-lg-3" >
-    <h1>Sing up</h1>
+    <h1>Intra in cont</h1>
     <div class="row justify-content-center">
         <EditForm  Model="singUpModel" OnValidSubmit="HandelSingUp">
             <DataAnnotationsValidator />

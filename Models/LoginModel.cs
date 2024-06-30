@@ -8,8 +8,18 @@ namespace Checker.Models
     {
         [Required]
         public string ?email { get; set; }
+
         [Required]
         public string ?password { get; set; }
+
+        [Required]
+        public string ?firstName { get; set; }
+
+        [Required]
+        public string ?lastName { get; set; }
+
+        [Required]
+        public DateOnly dateOdBirth { get; set; } = DateOnly.FromDateTime(DateTime.Now);
 
     }
 }

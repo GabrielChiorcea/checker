@@ -1,41 +1,62 @@
 @page "/login"
-@using Checker.Models
-@using Checker.Services
+@using global::Checker.Services
+@using global::Checker.Models
 @inject AuthService AuthService
 
-<PageTitle>Login</PageTitle>
+<PageTitle>Creare cont</PageTitle>
+
 
 @code {
     private LoginModel loginModel = new LoginModel();
-
     
     private async Task HandleLogin()
     {
+     
 
         try{
 
-           var token =  await AuthService.LoginAsync(loginModel);
+            var token =  await AuthService.LoginAsync(loginModel);
             loginModel = new LoginModel();
             Console.WriteLine(token?.message);
         }
         
         catch (Exception ex) {
-             Console.WriteLine("Eroare la autentificare: " + ex.Message);
+             Console.WriteLine("Eroare la creare cont: "+ ex.Message);
         }
     }
 }
 
 
 <div class="col-lg-6 offset-lg-3" >
-    <h1>Login</h1>
+    <h1>Creare cont</h1>
     <div class="row justify-content-center">
         <EditForm  Model="loginModel" OnValidSubmit="HandleLogin">
             <DataAnnotationsValidator />
 
             <div class="mb-3" >
-                <label class="form-label" >Username:</label>
-                <InputText class="form-control"  @bind-Value="loginModel.email" />
+                <label class="form-label" >First Name</label>
+                <InputText class="form-control"  @bind-Value="loginModel.firstName" />
                 <ValidationMessage For="() => loginModel.email"/>
+            </div>
+
+            <div class="mb-3" >
+                <label class="form-label" >Last Name</label>
+                <InputText class="form-control"  @bind-Value="loginModel.lastName" />
+                <ValidationMessage For="() => loginModel.email"/>
+            </div>
+
+
+            <div class="mb-3">
+                <strong>Date of birth</strong>:
+            </div>
+            <div class="mb-3">
+                <InputDate TValue="DateOnly" @bind-Value="loginModel.dateOdBirth" aria-placeholder="Enter Date"/>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <InputText class="form-control" @bind-Value="loginModel.email"/>
+                <ValidationMessage For=" () => loginModel.email"/>
             </div>
 
             <div class="mb-3" >

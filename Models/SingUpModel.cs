@@ -15,12 +15,6 @@ namespace Checker.Models
         [Required]
         public string ?password { get; set; }
 
-        public SingUpModel(){
 
-        }
-
-        public SingUpModel(string _password){
-            password = _password;
-        }
     }
 }
