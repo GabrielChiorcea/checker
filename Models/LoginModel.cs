@@ -18,8 +18,6 @@ namespace Checker.Models
         [Required]
         public string ?lastName { get; set; }
 
-        [Required]
-        public DateOnly dateOdBirth { get; set; } = DateOnly.FromDateTime(DateTime.Now);
-
+        
     }
 }
