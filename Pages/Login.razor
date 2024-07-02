@@ -1,24 +1,64 @@
 @page "/login"
 @using global::Checker.Services
 @using global::Checker.Models
-@inject AuthService AuthService
+@inject FetchService FetchService
 
 <PageTitle>Creare cont</PageTitle>
 
 
 @code {
     private LoginModel loginModel = new LoginModel();
-    
+    private EmailModel emailModel = new EmailModel();
+    private UserNameModel userNameModel = new UserNameModel();
+    private bool state = false;
+    private string message = "false";
+
+
+    private void stateManager () {
+        state = true ;
+    }
+
+    private async Task checkEmail()
+    {
+        try{
+            emailModel.email = loginModel.email;
+            var email = await FetchService.CheckEmailForAvailability(emailModel);
+
+            if(email.message == "true"){
+                message = "true";
+            }else{
+                message = "false";
+            }
+
+        }catch (Exception ex){
+            Console.WriteLine("Eroare la verificare email: "+ ex.Message);
+        }  
+    }
+
+    private async Task checkUserName()
+    {
+        try{
+            userNameModel.username = loginModel.username;
+            var username = await FetchService.CheckUserNameForAvailability(userNameModel);
+
+            if(username.message == "true"){
+                message = "true";
+            }else{
+                message = "false";
+            }
+
+        }catch (Exception ex){
+            Console.WriteLine("Eroare la verificare email: "+ ex.Message);
+        }  
+    }
+
     private async Task HandleLogin()
     {
-
         try{
-            var token =  await AuthService.LoginAsync(loginModel);
+            var token =  await FetchService.LoginAsync(loginModel);
             loginModel = new LoginModel();
             Console.WriteLine(token?.message);
-        }
-        
-        catch (Exception ex) {
+        }catch (Exception ex) {
              Console.WriteLine("Eroare la creare cont: "+ ex.Message);
         }
     }
@@ -31,21 +71,23 @@
         <EditForm  Model="loginModel" OnValidSubmit="HandleLogin">
             <DataAnnotationsValidator />
 
+         @if(state == false){
+
             <div class="mb-3" >
                 <label class="form-label" >First Name</label>
                 <InputText class="form-control"  @bind-Value="loginModel.firstName" />
-                <ValidationMessage For="() => loginModel.email"/>
+                <ValidationMessage For="() => loginModel.firstName"/>
             </div>
 
             <div class="mb-3" >
                 <label class="form-label" >Last Name</label>
                 <InputText class="form-control"  @bind-Value="loginModel.lastName" />
-                <ValidationMessage For="() => loginModel.email"/>
+                <ValidationMessage For="() => loginModel.lastName"/>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <InputText class="form-control" @bind-Value="loginModel.email"/>
+                <InputText class="form-control" @onfocusout="checkEmail" @bind-Value="loginModel.email"/>
                 <ValidationMessage For=" () => loginModel.email"/>
             </div>
 
@@ -55,8 +97,22 @@
                 <ValidationMessage For="() => loginModel.password"/>
             </div>
 
-            <button class="btn btn-primary" type="submit">Login</button>
+            <button class="btn btn-primary" @onclick="stateManager" type="button">Next</button>
+            @if(message == "true"){
+                 <p>Email is used</p>
+            }
+        } else {
+            <div class="mb-3" >
+                <label class="form-label" >User name:</label>
+                <InputText class="form-control" @onfocusout="checkUserName" @bind-Value="loginModel.username" type="password" />
+                <ValidationMessage For="() => loginModel.username"/>
+            </div>
+            @if(message == "true"){
+                 <p>Email is used</p>
+            }
 
+            <button class="btn btn-primary"  type="submit">Create</button>
+        }
         </EditForm>
     </div>
 </div>

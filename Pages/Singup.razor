@@ -2,7 +2,7 @@
 
 @using global::Checker.Services
 @using global::Checker.Models
-@inject AuthService AuthService
+@inject FetchService FetchService
 
 @code{
     private SingUpModel singUpModel = new SingUpModel();
@@ -11,7 +11,7 @@
 
         try{
             
-            var token = await AuthService.SingUpAsyc(singUpModel);
+            var token = await FetchService.SingUpAsyc(singUpModel);
             singUpModel = new SingUpModel();
             Console.WriteLine(token.message);
         }

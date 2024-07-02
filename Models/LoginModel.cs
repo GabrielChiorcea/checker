@@ -18,6 +18,8 @@ namespace Checker.Models
         [Required]
         public string ?lastName { get; set; }
 
+        [Required]
+        public string ?username { get; set; }
         
     }
 }
