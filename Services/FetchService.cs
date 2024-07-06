@@ -32,19 +32,8 @@ namespace Checker.Services
             return token;
         }
 
-        public async Task<JsonModel> CheckEmailForAvailability(EmailModel emailModel){
-
-            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/checkEmailForAvailability" , emailModel);
-            response.EnsureSuccessStatusCode();
-
-            var state = await response.Content.ReadFromJsonAsync<JsonModel>();
-
-            return state;
-        }
-
-        public async Task<JsonModel> CheckUserNameForAvailability(UserNameModel userNameModel){
-           
-            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/CheckUserNameForAvailability", userNameModel);
+        public async Task<JsonModel> checkUserAndEmailForAvailability(UserAndEmailModel userAndEmail ){
+            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/checkUserAndEmailForAvailability" , userAndEmail);
             response.EnsureSuccessStatusCode();
 
             var state = await response.Content.ReadFromJsonAsync<JsonModel>();

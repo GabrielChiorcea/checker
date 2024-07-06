@@ -8,4 +8,10 @@ namespace Checker.Models
     public class JsonModel {public string? message { get; set; }}
     public class EmailModel {public string? email { get; set; }}
     public class UserNameModel {public string? username { get; set; }}
+    
+    public class UserAndEmailModel {
+        public string Email { get; set; } = "";
+        public string Username { get; set; } = "";
+    
+    }
 }
