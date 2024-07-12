@@ -1,9 +1,26 @@
 ﻿@page "/"
+@using Checker.Services
 @inject NavigationManager _nav
+@inject FetchService FetchService
 
 <PageTitle>Home</PageTitle>
 
+@code{
 
+
+  private async void getAll(){
+
+    try{
+
+      var response = await FetchService.GetRespons("http://127.0.0.1:3000/get");
+      Console.WriteLine(response.message);
+    }catch(Exception ex){
+      Console.WriteLine(ex);
+    }
+
+  }
+
+}
 
 <div class="container">
     <div class="row justify-content-center">
@@ -20,8 +37,11 @@
                             <button type="button" class="btn btn-secondary btn-block" @onclick="@(() => _nav.NavigateTo("/singup"))">Signup</button>
                         </div>
                     </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-secondary btn-block" @onclick="@(() => getAll() )">get</button>
+                        </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</div>    

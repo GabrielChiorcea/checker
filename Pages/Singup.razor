@@ -3,6 +3,7 @@
 @using global::Checker.Services
 @using global::Checker.Models
 @inject FetchService FetchService
+@inject IJSRuntime JS
 
 @code{
     private SingUpModel singUpModel = new SingUpModel();
@@ -19,6 +20,8 @@
             Console.WriteLine("Eroare la autentificare: " + ex.Message);
         }
     }
+
+
 }  
 
 
