@@ -4,6 +4,7 @@
 @using global::Checker.Models
 @inject FetchService FetchService
 @inject IJSRuntime JS
+@inject ISessionStorageService sessionStorage
 
 @code{
     private SingUpModel singUpModel = new SingUpModel();
@@ -15,6 +16,7 @@
             var token = await FetchService.SingUpAsyc(singUpModel);
             singUpModel = new SingUpModel();
             Console.WriteLine(token.message);
+            await sessionStorage.SetItemAsync("authToken", token.message);
         }
         catch (Exception ex){
             Console.WriteLine("Eroare la autentificare: " + ex.Message);

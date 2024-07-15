@@ -82,6 +82,7 @@
             var token = await FetchService.LoginAsync(loginModel);
             loginModel = new LoginModel();
             Console.WriteLine(token?.message);
+            
         }
         catch (Exception ex)
         {

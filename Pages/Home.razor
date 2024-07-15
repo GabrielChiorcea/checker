@@ -2,18 +2,24 @@
 @using Checker.Services
 @inject NavigationManager _nav
 @inject FetchService FetchService
+@inject ISessionStorageService sessionStorage
 
 <PageTitle>Home</PageTitle>
 
 @code{
 
-
+ private async Task<string> GetToken()
+    {
+        string retrievedToken = await sessionStorage.GetItemAsync("authToken");
+        return retrievedToken;
+       
+    }
   private async void getAll(){
 
     try{
-
-      var response = await FetchService.GetRespons("http://127.0.0.1:3000/get");
-      Console.WriteLine(response.message);
+        var token = await GetToken();
+      var response = await FetchService.GetRespons("http://127.0.0.1:3000/get", token);
+      Console.WriteLine(token);
     }catch(Exception ex){
       Console.WriteLine(ex);
     }

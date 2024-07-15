@@ -1,5 +1,6 @@
 
 using System.Net;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using Checker.Models;
@@ -48,26 +49,20 @@ namespace Checker.Services
             return state;
         }
 
-    private async Task<string> GetCsrfToken()
-    {
-        return await _jsRuntime.InvokeAsync<string>("getCookie", "csrfToken");
-    }
 
-        public async Task<JsonModel> GetRespons(string url)
-        {   
-            var csf = await GetCsrfToken();
-            using HttpClient client = new HttpClient();
-            string jsonContent = $"{{\"val\":\"{csf}\"}}";
-            using HttpRequestMessage req = new HttpRequestMessage( HttpMethod.Post ,url){
-                Content = new StringContent(jsonContent, Encoding.UTF8, "application/json")
-            };
-              HttpResponseMessage response = await client.SendAsync(req);
-                response.EnsureSuccessStatusCode();
+public async Task<JsonModel> GetRespons(string url, string token)
+{
+    // Adăugarea token-ului Bearer în header-ul de autorizare
+    _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var responseBody = await response.Content.ReadFromJsonAsync<JsonModel>();
+    using HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
+    HttpResponseMessage response = await _httpClinet.SendAsync(req);
+    response.EnsureSuccessStatusCode();
 
-            return responseBody; 
-        }
+    var responseBody = await response.Content.ReadFromJsonAsync<JsonModel>();
+
+    return responseBody;
+}
 
 
     }
