@@ -3,7 +3,6 @@
 @inject NavigationManager _nav
 @inject FetchService FetchService
 @inject ISessionStorageService sessionStorage
-
 <PageTitle>Home</PageTitle>
 
 @code{
@@ -17,7 +16,7 @@
   private async void getAll(){
 
     try{
-        var token = await GetToken();
+      var token = await GetToken();
       var response = await FetchService.GetRespons("http://127.0.0.1:3000/get", token);
       Console.WriteLine(token);
     }catch(Exception ex){
@@ -40,7 +39,7 @@
                             <button type="button" class="btn btn-primary btn-block"@onclick="@(() => _nav.NavigateTo("/login"))">Login</button>
                         </div>
                         <div class="col-md-6">
-                            <button type="button" class="btn btn-secondary btn-block" @onclick="@(() => _nav.NavigateTo("/singup"))">Signup</button>
+                            <button type="button" class="btn btn-secondary btn-block" @onclick="@(() => _nav.NavigateTo("/signup"))">Signup</button>
                         </div>
                     </div>
                         <div class="col-md-6">

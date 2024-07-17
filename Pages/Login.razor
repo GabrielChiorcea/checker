@@ -1,191 +1,88 @@
 @page "/login"
+
 @using global::Checker.Services
-@using global::Checker.Models
+@using global::Checker.Models 
+
+
 @inject FetchService FetchService
+@inject IJSRuntime JS
+@inject ISessionStorageService sessionStorage
+@inject NavigationManager NavigationManager
 
-<PageTitle>Creare cont</PageTitle>
 
-@code {
-    private LoginModel loginModel = new LoginModel();
-    private UserAndEmailModel userAndEmailModel = new UserAndEmailModel();
+@code{
+    private SingUpModel singUpModel = new SingUpModel();
     private bool state = false;
-    private bool userName = false;
-    private bool userEmail = false;
-    private string message = "false";
-    private string styleClassEmail = "form-control";
-    private string styleClassUsername = "form-control";
+    private string status = "";
 
 
-    private async Task checkUserAndEmail()
-    {
-        try
-        {
-            if (!state) // Verifică email-ul
-            {
-                userAndEmailModel.Email = loginModel.email;
-                userAndEmailModel.Username = null;
 
-                var result = await FetchService.checkUserAndEmailForAvailability(userAndEmailModel);
-                Console.WriteLine(result.message);
-                if (result.message == "true")
-                {
-                    message = "true";
-                    styleClassEmail = "form-control is-invalid";
-                    
-                }
-                else
-                {
-                    message = "false";
-                    styleClassEmail = "form-control is-valid";
-                    userEmail = true;
-                }
-            }
-            else // Verifică username-ul
-            {
-                userAndEmailModel.Username = loginModel.username;
-                userAndEmailModel.Email = null;
-
-                var result = await FetchService.checkUserAndEmailForAvailability(userAndEmailModel);
-                Console.WriteLine(result.message);
-                if (result.message == "true")
-                {
-                    message = "true";
-                    styleClassUsername = "form-control is-invalid";
-                }
-                else
-                {
-                    message = "false";
-                    styleClassUsername = "form-control is-valid";
-                    userName = true;
-
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Eroare la verificare: " + ex.Message);
-        }
+    private void Reset(){
+        state = false;
+        status = "";
     }
 
-    private void stateManager()
-    {
-        state = true;
-        styleClassEmail = "form-control";
-        styleClassUsername = "form-control";
-        message = "false";
-    }
+    private async Task HandelSingUp(){    
 
-    private async Task HandleLogin()
-    {
-        try
-        {
-            var token = await FetchService.LoginAsync(loginModel);
-            loginModel = new LoginModel();
-            Console.WriteLine(token?.message);
+        try{
             
+           var message = await FetchService.SingUpAsyc(singUpModel);
+
+            if(message.Code == "200"){
+                await sessionStorage.SetItemAsync("authToken", message.Message);
+                singUpModel = new SingUpModel();
+                NavigationManager.NavigateTo("/");
+            }else if ( message.Code == "202"){
+                state = true;
+                status = message.Message;
+            }else{
+                state = true;
+                status = "We dont have a response from the server";
+            };
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Eroare la creare cont: " + ex.Message);
+        catch (Exception ex){
+            state = true;
+            status =  ex.Message;
         }
     }
-}
 
-<div class="col-lg-6 offset-lg-3">
-    <h1>Creare cont</h1>
-    <div class="row justify-content-center">
-        <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+
+}  
+
+
+    <div class="col-lg-6 offset-lg-3" >
+            <h1>Intra in cont</h1>
+        <div class="row justify-content-center">
+            <div>
+                <h6>If a problem occur a message will be send</h6>
+                @if(state == true){
+                    <div class="alert alert-danger" role="alert">
+                        @status
+                    </div>
+                }else{
+                    <div class="alert alert-primary" role="alert">
+                        All good at now.
+                    </div>
+                    }
+            </div>      
+        <EditForm  Model="singUpModel" OnValidSubmit="HandelSingUp">
             <DataAnnotationsValidator />
 
-            @if (!state)
-            {
-               
+            <div class="mb-3" >
+                <label class="form-label" >Username:</label>
+                <InputText class="form-control" @onfocus="Reset" @bind-Value="singUpModel.email" />
+                <ValidationMessage For="() => singUpModel.email"/>
+            </div>
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <InputText id="password" class="form-control" @bind-Value="loginModel.password" type="password" placeholder="At least 6 characters long"/>
-                    <ValidationMessage For="@(() => loginModel.password)" />
-                </div>
+            <div class="mb-3" >
+                <label class="form-label" >Password:</label>
+                <InputText class="form-control" @onfocus="Reset" @bind-Value="singUpModel.password" type="password" />
+                <ValidationMessage For="() => singUpModel.password"/>
+            </div>
 
-                <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <InputText id="confirmPassword" type="password" class="form-control" @bind-Value="loginModel.confirmPassword" placeholder="At least 6 characters long"/>
-                    <ValidationMessage For="@(() => loginModel.confirmPassword)" />
-                </div>
+            <button class="btn btn-primary" type="submit">Login</button>
 
-                <div class="mb-3">
-                    <label class="form-label">First Name</label>
-                    <InputText class="form-control" type="text" @bind-Value="loginModel.firstName" placeholder="Only letters are allowed."/>
-                    <ValidationMessage For="@(() => loginModel.firstName)" />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Last Name</label>
-                    <InputText class="form-control" type="text" @bind-Value="loginModel.lastName" placeholder="Only letters are allowed."/>
-                    <ValidationMessage For="@(() => loginModel.lastName)" />
-                </div>
-
-                 <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <InputText class="@styleClassEmail" @onfocusout="checkUserAndEmail" @bind-Value="loginModel.email" placeholder="gmail, yahoo, hotmail, domains"/>
-                    <ValidationMessage For="@(() => loginModel.email)" />
-                    @if (message == "true")
-                    {
-                        <div class="invalid-feedback">The email address is already in use. Forgot password?</div>
-                    }
-                    else if (message == "false")
-                    {
-                        <div class="valid-feedback">The email address is valid.</div>
-                    }
-                </div>
-
-
-                @if(!userEmail)
-                { 
-                    
-                    <div class="card text-center ">
-                        <div class="card-header">Info</div>
-                        <div class="card-body">
-                            <p class="card-text">After all inputs are green you are good to go</p>
-                        </div>
-                        <div class="card-footer text-body-secondary">Step 1 from 2</div>
-                    </div>
-
-                }else{
-                    <button class="btn btn-primary" @onclick="stateManager" type="button">Next</button> 
-                }
-            }
-            else
-            {
-                <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <InputText class="@styleClassUsername" @onfocusout="checkUserAndEmail" @bind-Value="loginModel.username" />
-                    <ValidationMessage For="@(() => loginModel.username)" />
-                    @if (message == "true")
-                    {
-                        <div class="invalid-feedback">The username is already in use.</div>
-                    }
-                    else if (message == "false")
-                    {
-                        <div class="valid-feedback">The username is valid.</div>
-                        
-                    }else{
-                        <p></p>
-                    }
-                    @if(userName)
-                        {
-                        <button class="btn btn-primary" type="submit">Create</button>
-                        }else{
-                                                    <div class="card text-center">
-                          <div class="card-header">Info</div>
-                          <div class="card-body">
-                            <p class="card-text">After username si green you are good to go</p>
-                          </div>
-                        <div class="card-footer text-body-secondary">Step 2 from 2</div>
-                    </div>
-                        }
-                </div>
-            }
         </EditForm>
     </div>
 </div>
+

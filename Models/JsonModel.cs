@@ -14,4 +14,9 @@ namespace Checker.Models
         public string Username { get; set; } = "";
     
     }
+
+    public class SignUpResponseModel { 
+        public string Code { get; set; }
+        public string Message { get; set; }
+    }
 }

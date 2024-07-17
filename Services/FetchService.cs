@@ -30,14 +30,13 @@ namespace Checker.Services
             return token;
         }
 
-        public async Task<JsonModel> SingUpAsyc(SingUpModel singUpModel){
+        public async Task<SignUpResponseModel> SingUpAsyc(SingUpModel singUpModel){
 
-            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/intra-in-cont", singUpModel);
-                        
+            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/intra-in-cont", singUpModel);           
             response.EnsureSuccessStatusCode();
-
-            var token = await response.Content.ReadFromJsonAsync<JsonModel>();
-            return token;
+            var message = await response.Content.ReadFromJsonAsync<SignUpResponseModel>();
+                
+            return message;
         }
 
         public async Task<JsonModel> checkUserAndEmailForAvailability(UserAndEmailModel userAndEmail ){
