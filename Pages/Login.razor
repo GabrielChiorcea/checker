@@ -1,9 +1,12 @@
 @page "/login"
 
-@using global::Checker.Services
+
+@using global::Checker.state
 @using global::Checker.Models 
-
-
+@using global::Checker.Services
+@using Fluxor
+@inject IState<AuthenticationState> AuthenticationState
+@inject IDispatcher Dispatcher
 @inject FetchService FetchService
 @inject IJSRuntime JS
 @inject ISessionStorageService sessionStorage
@@ -32,6 +35,7 @@
                 await sessionStorage.SetItemAsync("authToken", message.Message);
                 singUpModel = new SingUpModel();
                 NavigationManager.NavigateTo("/");
+                Dispatcher.Dispatch(new LoginAction());
             }else if ( message.Code == "202"){
                 state = true;
                 status = message.Message;
@@ -71,6 +75,7 @@
             <div class="mb-3" >
                 <label class="form-label" >Username:</label>
                 <InputText class="form-control" @onfocus="Reset" @bind-Value="singUpModel.email" />
+    using Checker.state;
                 <ValidationMessage For="() => singUpModel.email"/>
             </div>
 
@@ -78,6 +83,7 @@
                 <label class="form-label" >Password:</label>
                 <InputText class="form-control" @onfocus="Reset" @bind-Value="singUpModel.password" type="password" />
                 <ValidationMessage For="() => singUpModel.password"/>
+                
             </div>
 
             <button class="btn btn-primary" type="submit">Login</button>

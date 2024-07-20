@@ -1,52 +1,13 @@
 ﻿@page "/"
-@using Checker.Services
-@inject NavigationManager _nav
-@inject FetchService FetchService
-@inject ISessionStorageService sessionStorage
+@using Checker.state
+@inject IState<AuthenticationState> AuthenticationState
+
 <PageTitle>Home</PageTitle>
+@if(!AuthenticationState.Value.IsLoggedIn){
 
-@code{
-
- private async Task<string> GetToken()
-    {
-        string retrievedToken = await sessionStorage.GetItemAsync("authToken");
-        return retrievedToken;
-       
-    }
-  private async void getAll(){
-
-    try{
-      var token = await GetToken();
-      var response = await FetchService.GetRespons("http://127.0.0.1:3000/get", token);
-      Console.WriteLine(token);
-    }catch(Exception ex){
-      Console.WriteLine(ex);
-    }
-
-  }
-
+    <LogedOut />
+}else{
+    <Loged />
 }
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Selectează o acțiune</h5>
-                    <p class="card-text">Alegeți opțiunea de login sau signup.</p>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <button type="button" class="btn btn-primary btn-block"@onclick="@(() => _nav.NavigateTo("/login"))">Login</button>
-                        </div>
-                        <div class="col-md-6">
-                            <button type="button" class="btn btn-secondary btn-block" @onclick="@(() => _nav.NavigateTo("/signup"))">Signup</button>
-                        </div>
-                    </div>
-                        <div class="col-md-6">
-                            <button type="button" class="btn btn-secondary btn-block" @onclick="@(() => getAll() )">get</button>
-                        </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>    
+
