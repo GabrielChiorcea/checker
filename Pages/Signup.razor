@@ -26,13 +26,13 @@
             {
                 userAndEmailModel.Email = loginModel.email;
                 userAndEmailModel.Username = null;
+                Console.WriteLine(userAndEmailModel.Email);
 
                 var result = await FetchService.checkUserAndEmailForAvailability(userAndEmailModel);
                 if (result.message == "true")
                 {
                     message = "true";
                     styleClassEmail = "form-control is-invalid";
-                    
                 }
                 else
                 {
@@ -67,12 +67,16 @@
         }
     }
 
-    private void stateManager()
+
+
+    private  void stateManager()
     {
         state = true;
         styleClassEmail = "form-control";
         styleClassUsername = "form-control";
         message = "false";
+        
+
     }
 
     private async Task HandleLogin()
@@ -128,7 +132,7 @@
 
                  <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <InputText class="@styleClassEmail" @onfocusout="checkUserAndEmail" @bind-Value="loginModel.email" placeholder="gmail, yahoo, hotmail, domains"/>
+                    <InputText  class="@styleClassEmail"  @bind-Value="loginModel.email" placeholder="gmail, yahoo, hotmail, domains"/>
                     <ValidationMessage For="@(() => loginModel.email)" />
                     @if (message == "true")
                     {
@@ -141,9 +145,10 @@
                 </div>
 
 
+
                 @if(!userEmail)
                 { 
-                    
+                <button class="btn btn-primary" @onclick="checkUserAndEmail" id="email" type="button">verify email</button> 
                     <div class="card text-center ">
                         <div class="card-header">Info</div>
                         <div class="card-body">
@@ -153,14 +158,23 @@
                     </div>
 
                 }else{
-                    <button class="btn btn-primary" @onclick="stateManager" type="button">Next</button> 
+                    <button class="btn btn-primary" @onclick="stateManager" id="next" type="button">Next</button> 
+                      <div class="card text-center ">
+                        <div class="card-header">Info</div>
+                        <div class="card-body">
+                            <p class="card-text">After all inputs are green you are good to go</p>
+                        </div>
+                        <div class="card-footer text-body-secondary">Step 1 from 2</div>
+                    </div>
+
                 }
+                
             }
             else
             {
                 <div class="mb-3">
                     <label class="form-label">Username</label>
-                    <InputText class="@styleClassUsername" @onfocusout="checkUserAndEmail" @bind-Value="loginModel.username" />
+                    <InputText class="@styleClassUsername"  @bind-Value="loginModel.username" />
                     <ValidationMessage For="@(() => loginModel.username)" />
                     @if (message == "true")
                     {
@@ -177,11 +191,11 @@
                         {
                         <button class="btn btn-primary" type="submit">Create</button>
                         }else{
-                                                    <div class="card text-center">
-                          <div class="card-header">Info</div>
-                          <div class="card-body">
+                        <button class="btn btn-primary" @onclick="checkUserAndEmail" id="email" type="button">verify username</button> 
+                        <div class="card text-center">
+                          <div class="card-header">Info</div> <div class="card-body">
                             <p class="card-text">After username si green you are good to go</p>
-                          </div>
+                        </div>
                         <div class="card-footer text-body-secondary">Step 2 from 2</div>
                     </div>
                         }
