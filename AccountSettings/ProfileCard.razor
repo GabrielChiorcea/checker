@@ -1,0 +1,85 @@
+@page "/user-profile"
+@using System.IO
+@using Microsoft.AspNetCore.Components.Forms
+@using Checker.Models
+
+@code {
+    private ProfileCardModel profileCardModel = new ProfileCardModel();
+
+    private async Task Handler()
+    {
+        // Logic for handling form submission
+    }
+
+    private async Task HandleImageChange(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        using (var stream = new MemoryStream())
+        {
+            await file.OpenReadStream().CopyToAsync(stream);
+            profileCardModel.Image = stream.ToArray();
+        }
+    }
+}
+
+<EditForm Model="profileCardModel" OnValidSubmit="Handler" class="file-upload">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="row mb-5 gx-5 bg-secondary-soft">
+        <div class="col-xxl-8 mb-5 mb-xxl-0">
+            <div class="px-4 py-5 rounded">
+                <div class="row g-3">
+                    <h4 class="mb-4 mt-0">Contact detail</h4>
+                    <div class="col-md-6">
+                        <label for="homeAddress" class="form-label">Home Address</label>
+                        <InputText id="homeAddress" type="text" class="form-control" @bind-Value="profileCardModel.HomeAddress" />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="country" class="form-label">Country</label>
+                        <InputText id="country" type="text" class="form-control" @bind-Value="profileCardModel.Country" />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="county" class="form-label">County</label>
+                        <InputText id="county" type="text" class="form-control" @bind-Value="profileCardModel.County" />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="field" class="form-label">Field</label>
+                        <InputText id="field" type="text" class="form-control" @bind-Value="profileCardModel.Field" />
+                    </div>
+                    <div class="col-md-6">
+                        <label for="occupation" class="form-label">Occupation</label>
+                        <InputText id="occupation" type="text" class="form-control" @bind-Value="profileCardModel.Occupation" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xxl-4">
+            <div class="px-4 py-5 rounded">
+                <div class="row g-3">
+                    <h4 class="mb-4 mt-0">Upload your profile photo</h4>
+                    <div class="text-center">
+                        <div class="square position-relative display-2 mb-3">
+                            @if (profileCardModel.Image != null)
+                            {
+                                <img src="data:image/png;base64,@Convert.ToBase64String(profileCardModel.Image)" alt="Profile Image" style="width:200px; height:200px;" />
+                            }else{
+                                <i class="fas fa-fw fa-user position-absolute top-50 start-50 translate-middle text-secondary"></i>
+                            }
+                        </div>
+                        <InputFile OnChange="HandleImageChange" type="file" id="customFile" name="file" hidden />
+                        <label class="btn btn-success-soft btn-block" for="customFile">Upload</label>
+                        <button type="button" class="btn btn-danger-soft">Remove</button>
+                        <p class="text-muted mt-3 mb-0"><span class="me-1">Note:</span>Minimum size 300px x 300px</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Update</button>
+</EditForm>
+
+<style>
+    body {
+        color: #9b9ca1;
+    }
+</style>
