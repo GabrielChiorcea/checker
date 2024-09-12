@@ -13,6 +13,5 @@ namespace Checker.Models
         public string HomeAddress { get; set; }
         public string Country { get; set; }
         public string County { get; set; }
-        public string  Field { get; set; }
     }
 }

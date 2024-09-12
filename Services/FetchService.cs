@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using Checker.Models;
+using Checker.state;
 using Microsoft.JSInterop;
 
 
@@ -22,7 +23,7 @@ namespace Checker.Services
 
         public async Task<JsonModel> LoginAsync(LoginModel loginModel){
 
-            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/creare-cont", loginModel);
+            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/creare-cont", loginModel);
             response.EnsureSuccessStatusCode();
              
             var token = await response.Content.ReadFromJsonAsync<JsonModel>();
@@ -32,7 +33,7 @@ namespace Checker.Services
 
         public async Task<SignUpResponseModel> SingUpAsyc(SingUpModel singUpModel){
 
-            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/intra-in-cont", singUpModel);           
+            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/intra-in-cont", singUpModel);           
             response.EnsureSuccessStatusCode();
             var message = await response.Content.ReadFromJsonAsync<SignUpResponseModel>();
                 
@@ -40,7 +41,24 @@ namespace Checker.Services
         }
 
         public async Task<JsonModel> checkUserAndEmailForAvailability(UserAndEmailModel userAndEmail ){
-            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/checkUserAndEmailForAvailability" , userAndEmail);
+            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/checkUserAndEmailForAvailability" , userAndEmail);
+            response.EnsureSuccessStatusCode();
+
+            var state = await response.Content.ReadFromJsonAsync<JsonModel>();
+
+            return state;
+        }
+
+        public async Task<JsonModel> SetContactDetail(ProfileCardModel profileCard ){
+            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/SetContactDetail" , profileCard);
+            response.EnsureSuccessStatusCode();
+
+            var state = await response.Content.ReadFromJsonAsync<JsonModel>();
+
+            return state;
+        }
+        public async Task<JsonModel> SetSocialLink(SocialMediaModel socialMediaModel ){
+            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/SetContactDetail" , SetSocialLink);
             response.EnsureSuccessStatusCode();
 
             var state = await response.Content.ReadFromJsonAsync<JsonModel>();
@@ -49,20 +67,20 @@ namespace Checker.Services
         }
 
 
-public async Task<JsonModel> GetRespons(string url, string token)
-{
-    // Adăugarea token-ului Bearer în header-ul de autorizare
-    _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        public async Task<ProfileCardState> GetRespons(string url, string token)
+            {
+                // Adăugarea token-ului Bearer în header-ul de autorizare
+                _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-    using HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
-    HttpResponseMessage response = await _httpClinet.SendAsync(req);
-    response.EnsureSuccessStatusCode();
+                using HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
+                HttpResponseMessage response = await _httpClinet.SendAsync(req);
+                response.EnsureSuccessStatusCode();
 
-    var responseBody = await response.Content.ReadFromJsonAsync<JsonModel>();
+                // Deserializare automată într-un obiect ProfileCardState
+                var responseBody = await response.Content.ReadFromJsonAsync<ProfileCardState>();
 
-    return responseBody;
-}
-
+                return responseBody;
+            }
 
     }
 }
