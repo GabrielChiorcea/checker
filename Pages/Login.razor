@@ -30,12 +30,13 @@
         try{
             
            var message = await FetchService.SingUpAsyc(singUpModel);
+           
 
             if(message.Code == "200"){
                 await sessionStorage.SetItemAsync("authToken", message.Message);
                 singUpModel = new SingUpModel();
-                NavigationManager.NavigateTo("/");
                 Dispatcher.Dispatch(new LoginAction());
+                NavigationManager.NavigateTo("/");
             }else if ( message.Code == "202"){
                 state = true;
                 status = message.Message;
@@ -54,7 +55,7 @@
 }  
 
 
-    <div class="col-lg-6 offset-lg-3" >
+    @* <div class="col-lg-6 offset-lg-3" >
             <h1>Intra in cont</h1>
         <div class="row justify-content-center">
             <div>
@@ -90,4 +91,89 @@
         </EditForm>
     </div>
 </div>
+ *@
 
+<!-- Login 5 - Bootstrap Brain Component -->
+<section class="p-3 p-md-4 p-xl-5">
+  <div class="container ">
+    <div class="card border-light-subtle shadow-sm">
+      <div class="row g-0">
+        <div class="col-12 col-md-6 text-bg-primary">
+          <div class="d-flex align-items-center justify-content-center h-100">
+            <div class="col-10 col-xl-8 py-3">
+              <hr class="border-primary-subtle mb-4">
+              <h2 class="h1 mb-4">We make digital products that drive you to stand out.</h2>
+              <p class="lead m-0">We write words, take photos, make videos, and interact with artificial intelligence.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <div class="card-body p-3 p-md-4 p-xl-5">
+            <div class="row">
+              <div class="col-12">
+                <div class="mb-5">
+                  <h3>Log in</h3>
+                </div>
+              </div>
+            </div>
+             <div>
+                <h6>If a problem occur a message will be send</h6>
+                @if(state == true){
+                    <div class="alert alert-danger" role="alert">
+                        @status
+                    </div>
+                }else{
+                    <div class="alert alert-primary" role="alert">
+                        All good at now.
+                    </div>
+                    }
+            </div>
+
+            <EditForm  Model="singUpModel" OnValidSubmit="HandelSingUp">
+            <DataAnnotationsValidator />
+            <div class="row gy-3 gy-md-4 overflow-hidden">
+
+            <div class="col-12" >
+                <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                <InputText class="form-control" @onfocus="Reset" @bind-Value="singUpModel.email" />
+                <ValidationMessage For="() => singUpModel.email"/>
+            </div>
+
+            <div class="col-12" >
+                <label class="form-label" >Password:</label>
+                <InputText class="form-control" @onfocus="Reset" @bind-Value="singUpModel.password" type="password" />
+                <ValidationMessage For="() => singUpModel.password"/>
+                
+            </div>
+            <div class="col-12">
+            <div class="d-grid">
+            <button class="btn bsb-btn-xl btn-primary" type="submit">Login</button>
+            </div> 
+            </div> 
+            </div>
+
+        </EditForm>
+
+            <div class="row">
+              <div class="col-12">
+                <hr class="mt-5 mb-4 border-secondary-subtle">
+                <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
+                  <a href="#!" class="link-secondary text-decoration-none">Create new account</a>
+                  <a href="#!" class="link-secondary text-decoration-none">Forgot password</a>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<style>
+<link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/logins/login-5/assets/css/login-5.css">
+</style>

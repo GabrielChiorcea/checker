@@ -9,6 +9,7 @@ using Microsoft.JSInterop;
 
 
 
+
 namespace Checker.Services
 {
     public class FetchService
@@ -49,7 +50,10 @@ namespace Checker.Services
             return state;
         }
 
-        public async Task<JsonModel> SetContactDetail(ProfileCardModel profileCard ){
+        public async Task<JsonModel> SetContactDetail(ProfileCardModel profileCard, string token ){
+            
+            _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/SetContactDetail" , profileCard);
             response.EnsureSuccessStatusCode();
 
@@ -57,8 +61,11 @@ namespace Checker.Services
 
             return state;
         }
-        public async Task<JsonModel> SetSocialLink(SocialMediaModel socialMediaModel ){
-            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/SetContactDetail" , SetSocialLink);
+        public async Task<JsonModel> SetSocialLink(SocialMediaModel socialMediaModel, string token ){
+                
+            _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/SetSocialLink" , socialMediaModel);
             response.EnsureSuccessStatusCode();
 
             var state = await response.Content.ReadFromJsonAsync<JsonModel>();

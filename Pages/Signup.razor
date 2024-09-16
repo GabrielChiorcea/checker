@@ -96,111 +96,237 @@
     }
 }
 
-<div class="col-lg-6 offset-lg-3">
-    <h1>Creare cont</h1>
-    <div class="row justify-content-center">
-        <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
-            <DataAnnotationsValidator />
+<section class="background-radial-gradient overflow-hidden">
+  <style>
+    .background-radial-gradient {
+      background-color: hsl(218, 41%, 15%);
+      background-image: radial-gradient(650px circle at 0% 0%,
+          hsl(218, 41%, 35%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%),
+        radial-gradient(1250px circle at 100% 100%,
+          hsl(218, 41%, 45%) 15%,
+          hsl(218, 41%, 30%) 35%,
+          hsl(218, 41%, 20%) 75%,
+          hsl(218, 41%, 19%) 80%,
+          transparent 100%);
+    }
 
-            @if (!state)
-            {
-               
+    #radius-shape-1 {
+      height: 220px;
+      width: 220px;
+      top: -60px;
+      left: -130px;
+      background: radial-gradient(#44006b, #ad1fff);
+      overflow: hidden;
+    }
+
+    #radius-shape-2 {
+      border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+      bottom: -60px;
+      right: -110px;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(#44006b, #ad1fff);
+      overflow: hidden;
+    }
+
+    .bg-glass {
+      background-color: hsla(0, 0%, 100%, 0.9) !important;
+      backdrop-filter: saturate(200%) blur(25px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, #6e3f91, #ad1fff);
+      border: none;
+      border-radius: 50px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(45deg, #ad1fff, #6e3f91);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      background: hsla(0, 0%, 100%, 0.9);
+    }
+
+    .card-header {
+      background: linear-gradient(45deg, #6e3f91, #ad1fff);
+      color: #fff;
+    }
+
+    .card-footer {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-spacing {
+  margin-bottom: 20px; /* Ajustează valoarea după preferință */
+}
+
+
+    .form-control {
+      border: 2px solid #ad1fff;
+      border-radius: 10px;
+      padding: 10px;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #6e3f91;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    }
+
+
+
+  </style>
+
+  <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+    <div class="row gx-lg-5 align-items-center mb-5">
+      <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+        <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+          The best offer <br />
+          <span style="color: hsl(218, 81%, 75%)">for your business</span>
+        </h1>
+        <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+          Temporibus, expedita iusto veniam atque, magni tempora mollitia
+          dolorum consequatur nulla, neque debitis eos reprehenderit quasi
+          ab ipsum nisi dolorem modi. Quos?
+        </p>
+      </div>
+
+      <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+        <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+        <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+        <div class="card bg-glass">
+          <div class="card-body px-4 py-5 px-md-5">
+            <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+              <DataAnnotationsValidator />
+
+              @if (!state)
+              {
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+                    <div data-mdb-input-init class="form-outline">
+                      <label class="form-label">First Name</label>
+                      <InputText class="form-control" type="text" @bind-Value="loginModel.firstName" placeholder="Only letters are allowed."/>
+                      <ValidationMessage For="@(() => loginModel.firstName)" />
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-4">
+                    <div data-mdb-input-init class="form-outline">
+                      <label class="form-label">Last Name</label>
+                      <InputText class="form-control" type="text" @bind-Value="loginModel.lastName" placeholder="Only letters are allowed."/>
+                      <ValidationMessage For="@(() => loginModel.lastName)" />
+                    </div>
+                  </div>
+                </div>
 
                 <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <InputText class="@styleClassEmail" @bind-Value="loginModel.email" placeholder="gmail, yahoo, hotmail, domains"/>
+                  <ValidationMessage For="@(() => loginModel.email)" />
+
+                  <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
                     <InputText id="password" class="form-control" @bind-Value="loginModel.password" type="password" placeholder="At least 6 characters long"/>
                     <ValidationMessage For="@(() => loginModel.password)" />
-                </div>
+                  </div>
 
-                <div class="mb-3">
+                  <div class="mb-3">
                     <label for="confirmPassword" class="form-label">Confirm Password</label>
                     <InputText id="confirmPassword" type="password" class="form-control" @bind-Value="loginModel.confirmPassword" placeholder="At least 6 characters long"/>
                     <ValidationMessage For="@(() => loginModel.confirmPassword)" />
+                  </div>
+
+                  @if (message == "true")
+                  {
+                    <div class="invalid-feedback">The email address is already in use. Forgot password?</div>
+                  }
+                  else if (message == "false")
+                  {
+                    <div class="valid-feedback">The email address is valid.</div>
+                  }
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">First Name</label>
-                    <InputText class="form-control" type="text" @bind-Value="loginModel.firstName" placeholder="Only letters are allowed."/>
-                    <ValidationMessage For="@(() => loginModel.firstName)" />
-                </div>
-
-                <div class="mb-3">
-                    <label class="form-label">Last Name</label>
-                    <InputText class="form-control" type="text" @bind-Value="loginModel.lastName" placeholder="Only letters are allowed."/>
-                    <ValidationMessage For="@(() => loginModel.lastName)" />
-                </div>
-
-                 <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <InputText  class="@styleClassEmail"  @bind-Value="loginModel.email" placeholder="gmail, yahoo, hotmail, domains"/>
-                    <ValidationMessage For="@(() => loginModel.email)" />
-                    @if (message == "true")
-                    {
-                        <div class="invalid-feedback">The email address is already in use. Forgot password?</div>
-                    }
-                    else if (message == "false")
-                    {
-                        <div class="valid-feedback">The email address is valid.</div>
-                    }
-                </div>
-
-
-
-                @if(!userEmail)
+                @if (!userEmail)
                 { 
-                <button class="btn btn-primary" @onclick="checkUserAndEmail" id="email" type="button">verify email</button> 
-                    <div class="card text-center ">
-                        <div class="card-header">Info</div>
-                        <div class="card-body">
-                            <p class="card-text">After all inputs are green you are good to go</p>
-                        </div>
-                        <div class="card-footer text-body-secondary">Step 1 from 2</div>
+                  <button class="btn btn-primary btn-spacing" @onclick="checkUserAndEmail" id="email" type="button">Verify Email</button> 
+                  <div class="card text-center">
+                    <div class="card-header">Info</div>
+                    <div class="card-body">
+                      <p class="card-text">After all inputs are green you are good to go</p>
                     </div>
-
-                }else{
-                    <button class="btn btn-primary" @onclick="stateManager" id="next" type="button">Next</button> 
-                      <div class="card text-center ">
-                        <div class="card-header">Info</div>
-                        <div class="card-body">
-                            <p class="card-text">After all inputs are green you are good to go</p>
-                        </div>
-                        <div class="card-footer text-body-secondary">Step 1 from 2</div>
-                    </div>
-
+                    <div class="card-footer text-body-secondary">Step 1 from 2</div>
+                  </div>
                 }
-                
-            }
-            else
-            {
-                <div class="mb-3">
-                    <label class="form-label">Username</label>
-                    <InputText class="@styleClassUsername"  @bind-Value="loginModel.username" />
-                    <ValidationMessage For="@(() => loginModel.username)" />
-                    @if (message == "true")
-                    {
-                        <div class="invalid-feedback">The username is already in use.</div>
-                    }
-                    else if (message == "false")
-                    {
-                        <div class="valid-feedback">The username is valid.</div>
-                        
-                    }else{
-                        <p></p>
-                    }
-                    @if(userName)
-                        {
-                        <button class="btn btn-primary" type="submit">Create</button>
-                        }else{
-                        <button class="btn btn-primary" @onclick="checkUserAndEmail" id="email" type="button">verify username</button> 
-                        <div class="card text-center">
-                          <div class="card-header">Info</div> <div class="card-body">
-                            <p class="card-text">After username si green you are good to go</p>
-                        </div>
-                        <div class="card-footer text-body-secondary">Step 2 from 2</div>
+                else
+                {
+                  <button class="btn btn-primary btn-spacing " @onclick="stateManager" id="next" type="button">Next</button> 
+                  <div class="card text-center">
+                    <div class="card-header">Info</div>
+                    <div class="card-body">
+                      <p class="card-text">After all inputs are green you are good to go</p>
                     </div>
-                        }
+                    <div class="card-footer text-body-secondary">Step 1 from 2</div>
+                  </div>
+                }
+              }
+              else
+              {
+                <div class="mb-3">
+                  <label class="form-label">Username</label>
+                  <InputText class="@styleClassUsername" @bind-Value="loginModel.username" />
+                  <ValidationMessage For="@(() => loginModel.username)" />
+                  @if (message == "true")
+                  {
+                    <div class="invalid-feedback">The username is already in use.</div>
+                  }
+                  else if (message == "false")
+                  {
+                    <div class="valid-feedback">The username is valid.</div>
+                  }
+                  else
+                  {
+                    <p></p>
+                  }
+                  @if (userName)
+                  {
+                    <button class="btn btn-primary btn-spacing " type="submit">Create</button>
+                  }
+                  else
+                  {
+                    <button class="btn btn-primary btn-spacing " @onclick="checkUserAndEmail" id="email" type="button">Verify Username</button> 
+                    <div class="card text-center">
+                      <div class="card-header">Info</div>
+                      <div class="card-body">
+                        <p class="card-text">After username is green you are good to go</p>
+                      </div>
+                      <div class="card-footer text-body-secondary">Step 2 from 2</div>
+                    </div>
+                  }
                 </div>
-            }
-        </EditForm>
+              }
+            </EditForm>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+</section>

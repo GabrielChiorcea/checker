@@ -1,4 +1,4 @@
-
+/* 
 .custome{
     display: flex;
     flex-direction: row;
@@ -21,9 +21,9 @@
 .card {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
-    border-radius: 10px; /* Rotunjirea marginilor cardului */
-    border: none; /* Eliminarea marginii cardului */
-    margin: 50px auto; /* Așezarea centralizată a cardului */
+    border-radius: 10px; 
+    border: none; 
+    margin: 50px auto; 
 }
 
 .card:hover {
@@ -31,5 +31,234 @@
 }
 
 .card-body {
-    text-align: center; /* Aliniere text în centrul cardului */
+    text-align: center; 
+} */
+
+
+
+/* @media (min-width: 992px) { .login-box { margin: 40px 0; } }
+
+
+@media (min-width: 768px) {
+    .login-box .form-wrap {
+      padding: 45px;
+    }
+  } 
+  
+@media (min-width: 992px) {
+    .login-box .form-wrap {
+      margin-top: -40px;
+      margin-bottom: -40px;
+      padding: 60px;
+    }
+  }  */
+
+  
+/* Floating animations */
+
+
+.homepage {
+  min-height: 100vh;
+  background: linear-gradient(145deg, #1e1e2a, #121214);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hero Section */
+.hero-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 0;
+}
+
+.futuristic-card {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 60px 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.5);
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+  transform: perspective(1000px) rotateX(10deg) rotateY(-10deg);
+  animation: float 6s ease-in-out infinite;
+}
+
+.futuristic-card h1 {
+  font-size: 3.5rem;
+  color: #00ffcc;
+  margin-bottom: 20px;
+}
+
+.futuristic-card p {
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+  color: #ff66cc;
+}
+
+/* Features Section */
+.features-section {
+  padding: 50px 20px;
+  background-color: #151520;
+  text-align: center;
+}
+
+.features-section h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #00ffcc;
+}
+
+.features-grid {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.feature-item {
+  width: 250px;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 255, 255, 0.2);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+}
+
+/* Footer */
+footer {
+  padding: 30px;
+  background-color: #121214;
+  text-align: center;
+  color: #aaa;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+footer a {
+  color: #00ffcc;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+
+/* Stilizare generală butoane */
+.btn {
+  display: inline-block;
+  background: linear-gradient(145deg, #00ffcc, #ff66cc);
+  border: none;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 30px;
+  text-transform: uppercase;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 255, 255, 0.2);
+  text-decoration: none;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-login {
+  background: linear-gradient(145deg, #00ffcc, #009999);
+}
+
+.btn-signup {
+  background: linear-gradient(145deg, #ff66cc, #ff3399);
+}
+
+/* Efect hover butoane */
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 255, 255, 0.3);
+}
+
+/* Efect focus butoane */
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 255, 255, 0.5);
+}
+
+.futuristic-card h1 {
+  font-size: 3.5rem;
+  color: #00ffcc;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 255, 255, 0.5);
+}
+
+.futuristic-card p {
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+  color: #ff66cc;
+  text-shadow: 1px 1px 3px rgba(255, 105, 180, 0.5);
+}
+
+.floating-shapes .shape {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  filter: blur(10px);
+  animation: float 12s ease-in-out infinite;
+}
+
+.shape1 {
+  width: 120px;
+  height: 120px;
+  top: 10%;
+  left: 15%;
+  animation-duration: 14s;
+}
+
+.shape2 {
+  width: 150px;
+  height: 150px;
+  top: 50%;
+  left: 50%;
+  animation-duration: 16s;
+}
+
+.shape3 {
+  width: 200px;
+  height: 200px;
+  bottom: 20%;
+  right: 20%;
+  animation-duration: 18s;
+}
+
+.shape4 {
+  width: 100px;
+  height: 100px;
+  bottom: 10%;
+  right: 10%;
+  animation-duration: 20s;
+}
+
+
+@keyframes move {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(180deg); }
+  100% { transform: translateY(0) rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% {
+      transform: translateY(0);
+  }
+  50% {
+      transform: translateY(-20px);
+  }
 }

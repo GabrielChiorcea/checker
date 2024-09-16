@@ -19,6 +19,7 @@
 
      private async Task<string> GetToken()
     {
+         
         string retrievedToken = await sessionStorage.GetItemAsync("authToken");
         return retrievedToken;
        

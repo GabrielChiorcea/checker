@@ -1,14 +1,24 @@
 @page "/user-profile"
+
+@using global::Checker.Services
+@using global::Checker.state
+@using global::Checker.Models 
+@inject FetchService FetchService
 @using System.IO
 @using Microsoft.AspNetCore.Components.Forms
-@using Checker.Models
+@inject ISessionStorageService sessionStorage
 
 @code {
     private ProfileCardModel profileCardModel = new ProfileCardModel();
 
-    private void  Handler()
+    private async Task Handler()
     {
-            Console.WriteLine(profileCardModel.Country, profileCardModel.Image, profileCardModel.HomeAddress, profileCardModel.Occupation);
+            try{
+                string tocken = await sessionStorage.GetItemAsync("authToken");
+                var profilecard = await FetchService.SetContactDetail(profileCardModel, tocken);
+            }catch(Exception e){
+                Console.WriteLine(e);
+            }
     }
 
     private async Task HandleImageChange(InputFileChangeEventArgs e)
@@ -69,6 +79,7 @@
                     </div>
                 </div>
             </div>
+    using Checker.Services;
         </div>
     </div>
     <button class="btn btn-primary" type="submit">Update</button>

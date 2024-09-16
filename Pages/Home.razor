@@ -3,11 +3,64 @@
 @inject IState<AuthenticationState> AuthenticationState
 
 <PageTitle>Home</PageTitle>
-@if(!AuthenticationState.Value.IsLoggedIn){
+@* @if(!AuthenticationState.Value.IsLoggedIn){
 
     <LogedOut />
 }else{
     <Loged />
-}
+} *@
+
+
+
+<div class="homepage">
+    <div class="hero-section">
+        <div class="container">
+            <div class="card-wrapper">
+                <div class="futuristic-card">
+                    <h1>Welcome to the Future</h1>
+                    <p>Access the best features by logging in or signing up now!</p>
+                    <div class="button-container">
+                        <a href="/login" class="btn btn-login">Login</a>
+                        <a href="/signup" class="btn btn-signup">Sign Up</a>
+                    </div>
+                </div>
+                <div class="floating-shapes">
+                    <div class="shape shape1"></div>
+                    <div class="shape shape2"></div>
+                    <div class="shape shape3"></div>
+                    <div class="shape shape4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section - Less prominent -->
+    <div class="features-section">
+        <h2>Why Join Us?</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <i class="fas fa-rocket"></i>
+                <h3>Fast & Secure</h3>
+                <p>Experience blazing-fast performance with top-notch security protocols.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-brain"></i>
+                <h3>AI-Powered</h3>
+                <p>Leverage the power of AI to automate and enhance your workflow.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-users"></i>
+                <h3>Community Driven</h3>
+                <p>Connect with an active and innovative community of like-minded individuals.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 FutureCorp. All Rights Reserved.</p>
+        <p><a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+    </footer>
+</div>
 
 
