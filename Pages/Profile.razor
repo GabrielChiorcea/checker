@@ -1,6 +1,6 @@
 @page "/profile"
 @using global::Checker.state
-@inject IState<ProfileCardState> ProfileCardState
+@* @inject IState<ProfileCardState> ProfileCardState *@
 
 
 <section style="background-color: #eee;">
@@ -25,7 +25,7 @@
               class="rounded-circle img-fluid" style="width: 150px;">
             <h5 class="my-3">John Smith</h5>
             <p class="text-muted mb-1">Full Stack Developer</p>
-            <p class="text-muted mb-4">@(ProfileCardState.Value.Country)</p> 
+            @* <p class="text-muted mb-4">@(ProfileCardState.Value.Country)</p>  *@
             <div class="d-flex justify-content-center mb-2">
               <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Follow</button>
               <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Message</button>

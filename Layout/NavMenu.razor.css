@@ -6,7 +6,8 @@
 
 .top-row {
     height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    background-color: #121214;
+
 }
 
 .navbar-brand {
@@ -79,6 +80,8 @@
     .nav-scrollable {
         height: calc(100vh - 3.5rem);
         overflow-y: auto;
+        background-color: #121214;
+
     }
 } 
 
