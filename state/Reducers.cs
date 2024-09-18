@@ -3,35 +3,33 @@ using Fluxor;
 namespace Checker.state
 {
 
-public static class AuthenticationReducer
-{
+    public static class AuthenticationReducer
+    {
         [ReducerMethod]
         public static AuthenticationState ReduceLoginAction(AuthenticationState state, LoginAction action) => new AuthenticationState(true);
 
         [ReducerMethod]
         public static AuthenticationState ReduceLogoutAction(AuthenticationState state, LogoutAction action) => new AuthenticationState(false);
 
-    
+
+    }
+
+public static class ProfileCardReducer
+{
+    [ReducerMethod]
+    public static ProfileCardState ReduceProfileCard(ProfileCardState state, GetProfileCardState action)
+    {
+        // Return a new instance of the state with the data received from the action
+        return new ProfileCardState(
+            action.State.HomeAddress,
+            action.State.Country,
+            action.State.County,
+            action.State.Occupation,
+            action.State.Image
+        );
+    }
 }
 
-public static class ProfileCardReducer{
-
-        [ReducerMethod]
-        public static ProfileCardState ReduceProfileCard(ProfileCardState state, GetProfileCardState action)
-        {
-            // Returnează o nouă instanță a stării cu datele primite din acțiune
-            return new ProfileCardState
-            {
-                HomeAddress = action.State.HomeAddress,
-                Country = action.State.Country,
-                County = action.State.County,
-                Occupation = action.State.Occupation,
-                Image = action.State.Image
-            };
-        }
-}
-
- 
 
 
 }

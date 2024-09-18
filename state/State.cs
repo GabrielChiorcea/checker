@@ -9,6 +9,9 @@ using Fluxor;
 
 namespace Checker.state
 {
+
+
+
     public class AuthenticationState
 {
     public bool IsLoggedIn { get; } = false;
@@ -19,18 +22,15 @@ namespace Checker.state
     }
 }
 
+
 public class ProfileCardState
 {
-    public byte[] Image { get; set; }
-    public string Occupation { get; set; }
-    public string HomeAddress { get; set; }
-    public string Country { get; set; }
-    public string County { get; set; }
+    public string HomeAddress { get; }
+    public string Country { get; }
+    public string County { get; }
+    public string Occupation { get; }
+    public byte[] Image { get; }
 
-    // Constructor implicit necesar pentru serializare/deserializare JSON
-    public ProfileCardState() { }
-
-    // Constructor pentru inițializare completă
     public ProfileCardState(string homeAddress, string country, string county, string occupation, byte[] image)
     {
         HomeAddress = homeAddress;
@@ -40,7 +40,6 @@ public class ProfileCardState
         Image = image;
     }
 }
-
 
 
 }
