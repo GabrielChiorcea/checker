@@ -14,22 +14,38 @@ namespace Checker.state
 
     }
 
-public static class ProfileCardReducer
+ public static class ProfileCardReducer
+    {
+        [ReducerMethod]
+        public static ProfileCardState ReduceProfileCard(ProfileCardState state, GetProfileCardState action)
+        {
+            return new ProfileCardState(
+                action.State.HomeAddress,
+                action.State.Country,
+                action.State.County,
+                action.State.Occupation,
+                action.State.FullName,
+                action.State.Image
+            );
+        }
+    }
+
+public static class SocialMediaReducer
 {
     [ReducerMethod]
-    public static ProfileCardState ReduceProfileCard(ProfileCardState state, GetProfileCardState action)
+    public static SocialMediaState ReduceSocialMedia(SocialMediaState state, GetSocialMediaState action)
     {
         // Return a new instance of the state with the data received from the action
-        return new ProfileCardState(
-            action.State.HomeAddress,
-            action.State.Country,
-            action.State.County,
-            action.State.Occupation,
-            action.State.Image
+        return new SocialMediaState(
+            action.State.LinkedIn,
+            action.State.FaceBook,
+            action.State.GitHub,
+            action.State.Instagram,
+            action.State.Twitter,
+            action.State.Youtube
         );
     }
+
 }
-
-
 
 }

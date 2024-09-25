@@ -54,7 +54,7 @@ namespace Checker.Services
             
             _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/SetContactDetail" , profileCard);
+            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/setContactDetail" , profileCard);
             response.EnsureSuccessStatusCode();
 
             var state = await response.Content.ReadFromJsonAsync<JsonModel>();
@@ -65,7 +65,7 @@ namespace Checker.Services
                 
             _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/SetSocialLink" , socialMediaModel);
+            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/setSocialLink" , socialMediaModel);
             response.EnsureSuccessStatusCode();
 
             var state = await response.Content.ReadFromJsonAsync<JsonModel>();
@@ -74,7 +74,7 @@ namespace Checker.Services
         }
 
 
-        public async Task<ProfileCardState> GetRespons(string url, string token)
+        public async Task<ProfileCardState> GetResponsSocialCard(string url, string token)
             {
                 // Adăugarea token-ului Bearer în header-ul de autorizare
                 _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -89,5 +89,25 @@ namespace Checker.Services
                 return responseBody;
             }
 
+
+
+            public async Task<SocialMediaState> GetResponsSocialLinks(string url, string token)
+            {
+                // Adăugarea token-ului Bearer în header-ul de autorizare
+                _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                using HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
+                HttpResponseMessage response = await _httpClinet.SendAsync(req);
+                response.EnsureSuccessStatusCode();
+
+                // Deserializare automată într-un obiect ProfileCardState
+                var responseBody = await response.Content.ReadFromJsonAsync<SocialMediaState>();
+
+                return responseBody;
+            }
+
+
     }
+
+    
 }

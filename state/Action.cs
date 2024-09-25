@@ -6,6 +6,9 @@ using Checker.Models;
 
 namespace Checker.state
 {
+
+
+
 public class LoginAction { }
 
 public class LogoutAction { }
@@ -21,6 +24,15 @@ public class GetProfileCardState
 }
 
 
+public class GetSocialMediaState
+{
+    public SocialMediaState State { get; }
 
+    public GetSocialMediaState(SocialMediaState state)
+    {
+        State = state;
+    }
+
+}
 
 }

@@ -4,6 +4,8 @@
 @using global::Checker.Services
 @using Fluxor
 @inject IState<ProfileCardState> ProfileCardState 
+@inject IState<SocialMediaState> SocialMediaState
+@inject ILogger<Profile> Logger
 
 
 <section style="background-color: #eee;">
@@ -24,10 +26,12 @@
       <div class="col-lg-4">
         <div class="card mb-4">
           <div class="card-body text-center">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-              class="rounded-circle img-fluid" style="width: 150px;">
-            <h5 class="my-3">John Smith</h5>
-            <p class="text-muted mb-1">Full Stack Developer</p>
+            @* <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+              class="rounded-circle img-fluid" style="width: 150px;"> *@
+            <img class="rounded-circle img-fluid" style="width: 150px;" src="data:image/png;base64,@(Convert.ToBase64String(ProfileCardState.Value.Image))" alt="Profile Image"  />
+
+            <h5 class="my-3">@(ProfileCardState.Value.FullName)</h5>
+            <p class="text-muted mb-1">@(ProfileCardState.Value.Occupation)</p>
              <p class="text-muted mb-4">@(ProfileCardState.Value.HomeAddress)</p> 
             <div class="d-flex justify-content-center mb-2">
               <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Follow</button>
@@ -40,23 +44,23 @@
             <ul class="list-group list-group-flush rounded-3">
               <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <i class="fas fa-globe fa-lg text-warning"></i>
-                <p class="mb-0">https://mdbootstrap.com</p>
+                <p class="mb-0">@SocialMediaState.Value.FaceBook</p>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <i class="fab fa-github fa-lg text-body"></i>
-                <p class="mb-0">mdbootstrap</p>
+                <p class="mb-0">@SocialMediaState.Value.GitHub</p>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <i class="fab fa-twitter fa-lg" style="color: #55acee;"></i>
-                <p class="mb-0">mdbootstrap</p>
+                <p class="mb-0">@SocialMediaState.Value.Instagram</p>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <i class="fab fa-instagram fa-lg" style="color: #ac2bac;"></i>
-                <p class="mb-0">mdbootstrap</p>
+                <p class="mb-0">@SocialMediaState.Value.LinkedIn</p>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center p-3">
                 <i class="fab fa-facebook-f fa-lg" style="color: #3b5998;"></i>
-                <p class="mb-0">mdbootstrap</p>
+                <p class="mb-0">@SocialMediaState.Value.Twitter</p>
               </li>
             </ul>
           </div>
@@ -70,7 +74,7 @@
                 <p class="mb-0">Full Name</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">Johnatan Smith</p>
+                <p class="text-muted mb-0">@(ProfileCardState.Value.FullName)</p>
               </div>
             </div>
             <hr>
@@ -106,7 +110,7 @@
                 <p class="mb-0">Address</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+                <p class="text-muted mb-0">@(ProfileCardState.Value.HomeAddress)</p>
               </div>
             </div>
           </div>

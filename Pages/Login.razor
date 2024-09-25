@@ -18,6 +18,24 @@
     private bool state = false;
     private string status = "";
 
+    @* private async Task<string> GetToken()
+    {
+        string retrievedToken = await sessionStorage.GetItemAsync("authToken");
+        return retrievedToken;
+    } *@
+
+private async void getAll(string token)
+    {
+        try
+        {
+            var response = await FetchService.GetResponsSocialCard("http://127.0.0.1:3000/get", token);
+            Dispatcher.Dispatch(new GetProfileCardState(response));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+    }
 
 
     private void Reset(){
@@ -36,6 +54,7 @@
                 await sessionStorage.SetItemAsync("authToken", message.Message);
                 singUpModel = new SingUpModel();
                 Dispatcher.Dispatch(new LoginAction());
+                getAll(message.Message);
                 NavigationManager.NavigateTo("/");
             }else if ( message.Code == "202"){
                 state = true;

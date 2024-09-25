@@ -28,6 +28,7 @@
         {
             await file.OpenReadStream().CopyToAsync(stream);
             profileCardModel.Image = stream.ToArray();
+
         }
     }
 }

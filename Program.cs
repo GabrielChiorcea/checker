@@ -20,5 +20,7 @@ builder.Services.AddFluxor(o =>
 
 builder.Services.AddScoped<FetchService>();
 
+builder.Logging.SetMinimumLevel(LogLevel.Information);
+// Remove the unsupported AddConsole logging provider
 
 await builder.Build().RunAsync();
