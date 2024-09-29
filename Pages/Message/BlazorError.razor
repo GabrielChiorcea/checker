@@ -1,0 +1,91 @@
+@using Checker.state
+
+@inject IState<ErrorState> errorState
+
+
+    <div class="error-container">
+        <div class="ghost-background"></div>
+        <div class="ghost-icon">👻</div> <!-- Ghost emoji for effect -->
+        <div class="error">
+        <div class="error-message">Oops! Something went wrong!</div>
+        <button class="btn btn-reload" onclick="location.reload();">Try Again</button>
+        </div>
+    </div>
+
+<style>
+
+        body {
+            background-color: #000000; /* Dark background for a spooky feel */
+            color: #ffffff; /* White text */
+            font-family: 'Arial', sans-serif; /* Clean font */
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            height: 100vh;
+            text-align: center;
+            padding: 0px;
+            position: relative; /* For positioning ghost image */
+        }
+
+        .error{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .ghostbusters-logo {
+            width: 250px; /* Adjust logo size */
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            font-size: 2rem; /* Larger error message */
+            font-weight: bold; /* Bold text */
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Adding depth */
+        }
+
+        .error-detail {
+            font-size: 1.2rem; /* Slightly smaller for details */
+            margin-bottom: 30px;
+            color: #f39c12; /* Yellow color for details */
+        }
+
+        .btn-reload {
+            background-color: #39e673; /* Ghostbusters red */
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2rem; /* Larger button text */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s; /* Smooth transition */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+
+        .btn-reload:hover {
+            background-color: #095d18; /* Darker red on hover */
+        }
+
+        .ghost-icon {
+            font-size: 100px; /* Larger ghost icon */
+            margin: 20px 0; /* Spacing around the icon */
+        }
+
+        /* Ghost image background */
+        .ghost-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://media.giphy.com/media/3o6ZsYt5NbljZAn2vS/giphy.gif') no-repeat center center;
+            background-size:cover;
+             opacity: 0.1; /* Low opacity for background ghost effect */ 
+            z-index: -1; /* Send background to back */
+</style>

@@ -1,0 +1,65 @@
+@page "/admin-settings"
+
+@using Checker.Pages.Message
+@using global::Checker.state
+@using global::Checker.Models 
+@using global::Checker.Services
+@using global::Checker.features
+@using Fluxor
+@inject AuthenticationTocken authenticationtocken
+@inject IState<ProfileCardState> ProfileCardState
+
+@inject FetchService fetchService
+@inject IDispatcher Dispatcher
+
+
+@if(error == false){//daca nu exista erori, se afiseaza continutul paginii
+
+    @if(isLoading){ //daca isLoading este true, se afiseaza componenta BlazorChecking
+        <BlazorChecking/>//componenta BlazorChecking este o componenta care afiseaza un mesaj de incarcare
+    } else if(tokenState){//daca tokenState este true, se afiseaza componenta ProfileDom
+        <AdminDom/>//componenta ProfileDom este o componenta care afiseaza datele utilizatorului
+    }else{
+        <Restricted/> //daca tokenState este false, se afiseaza componenta Restricted 
+    }
+}else{
+    <BlazorError/>
+}
+
+@code{
+    bool isLoading = true;
+    bool error = false;
+    bool tokenState;
+    protected override async Task OnInitializedAsync()//cu acesta functie in momentul in care se incarca pagina se verifica daca tokenul este valid
+    //se verifica authToken-ul din sessionStorage si se apeleaza serviciul de tip FetchService pentru a prelua datele utilizatorului
+    //se verifica daca tokenul este valid, folosind serviciul de tip AuthenticationTocken
+  {
+        tokenState = await authenticationtocken.Check();
+        
+        if(!string.IsNullOrEmpty(ProfileCardState.Value.FullName)){//daca FullName este diferit de null sau tokenState este false, se seteaza isLoading pe false
+            isLoading = false;
+            return;
+        }
+
+      string tokenString = await authenticationtocken.GetTocken();
+      if(tokenState){//daca tokenState este true, se apeleaza serviciul de tip FetchService pentru a prelua datele utilizatorului
+        try{   
+            var response = await fetchService.GetResponsSocialCard("https://backend.gabrielchiorcea.tech/get", tokenString);
+            Dispatcher.Dispatch(new GetProfileCardState(response));
+        if(response != null){//daca raspunsul este diferit de null, se seteaza isLoading pe false
+          isLoading = false;//isLoading este setat pe false, pentru a nu mai afisa componenta BlazorChecking
+          }else{
+            throw new Exception("eroare");
+          }
+
+        } catch (Exception) {
+            error = true;
+            return;
+        }
+        }else{
+            isLoading = false;//
+      }
+
+  }
+
+}

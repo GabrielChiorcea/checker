@@ -1,8 +1,25 @@
-@page "/admin-settings"
 @using Checker.Pages
+@inject ISessionStorageService sessionStorage
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager  
+    
+    
 
+@code {   
+    
+     void DeleteToken(){
+        sessionStorage.RemoveItemAsync("authToken");
+        NavigationManager.NavigateTo("/");
+        ReloadPage();
+    }
 
-<div class="container account-settings">
+    async void ReloadPage()
+    {
+        await JS.InvokeVoidAsync("location.reload");
+    }
+}
+    
+    <div class="container account-settings">
     <h2 class="mb-5 text-center">Account Settings</h2>
 
     <div class="row">
@@ -79,15 +96,19 @@
                 <div class="card-body">
                     <form>
                         <button class="btn btn-danger w-100 mb-3">Delete Account</button>
-                        <button class="btn btn-secondary w-100">Logout</button>
+                        <button class="btn btn-secondary w-100" @onclick="@(() => DeleteToken())">Logout</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+// Your existing HTML and Razor code here
+
 
 <style>
+
+
 body {
     background: radial-gradient(circle at center, #000 20%, #0d0d0d 100%);
     color: #fff;
@@ -195,3 +216,4 @@ body::after {
     animation: starTwinkle 2s infinite;
 }
 </style>
+

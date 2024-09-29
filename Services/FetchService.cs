@@ -1,10 +1,9 @@
-
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
 using Checker.Models;
 using Checker.state;
+using Fluxor;
 using Microsoft.JSInterop;
 
 
@@ -16,6 +15,9 @@ namespace Checker.Services
     {
         private readonly HttpClient _httpClinet;
         private readonly IJSRuntime _jsRuntime;
+
+        private readonly Dispatcher _dispatcher;
+        
 
         public FetchService(HttpClient httpClient, IJSRuntime jSRuntime){
             _httpClinet = httpClient;
@@ -54,7 +56,7 @@ namespace Checker.Services
             
             _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await _httpClinet.PostAsJsonAsync("http://127.0.0.1:3000/setContactDetail" , profileCard);
+            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/setContactDetail" , profileCard);
             response.EnsureSuccessStatusCode();
 
             var state = await response.Content.ReadFromJsonAsync<JsonModel>();
@@ -75,37 +77,26 @@ namespace Checker.Services
 
 
         public async Task<ProfileCardState> GetResponsSocialCard(string url, string token)
-            {
-                // Adăugarea token-ului Bearer în header-ul de autorizare
-                _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-                using HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
-                HttpResponseMessage response = await _httpClinet.SendAsync(req);
-                response.EnsureSuccessStatusCode();
-
-                // Deserializare automată într-un obiect ProfileCardState
-                var responseBody = await response.Content.ReadFromJsonAsync<ProfileCardState>();
-
-                return responseBody;
-            }
-
-
-
-            public async Task<SocialMediaState> GetResponsSocialLinks(string url, string token)
-            {
-                // Adăugarea token-ului Bearer în header-ul de autorizare
-                _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-                using HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
-                HttpResponseMessage response = await _httpClinet.SendAsync(req);
-                response.EnsureSuccessStatusCode();
-
-                // Deserializare automată într-un obiect ProfileCardState
-                var responseBody = await response.Content.ReadFromJsonAsync<SocialMediaState>();
-
-                return responseBody;
-            }
-
+        {
+            try{
+                    // Adăugarea token-ului Bearer în header-ul de autorizare
+                    _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    using HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, url);
+                    HttpResponseMessage response = await _httpClinet.SendAsync(req);
+                    if (!response.IsSuccessStatusCode)
+                        {
+                            var errorContent = await response.Content.ReadAsStringAsync();
+                            // Poți arunca o excepție sau gestiona eroarea cum vrei
+                            throw new Exception($"Error {response.StatusCode}: {errorContent}");
+                        }
+                    // Deserializare automată într-un obiect ProfileCardState
+                    var responseBody = await response.Content.ReadFromJsonAsync<ProfileCardState>();
+                    return responseBody;
+                } catch(Exception){
+                    return null;
+                }
+                
+        }
 
     }
 

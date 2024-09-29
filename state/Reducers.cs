@@ -14,6 +14,12 @@ namespace Checker.state
 
     }
 
+    public static class ErrorReducer
+    {
+        [ReducerMethod]
+        public static ErrorState ReduceGetErrorState(ErrorState state, ErrorAction action) => new ErrorState(true);
+    }
+
  public static class ProfileCardReducer
     {
         [ReducerMethod]
@@ -25,27 +31,34 @@ namespace Checker.state
                 action.State.County,
                 action.State.Occupation,
                 action.State.FullName,
-                action.State.Image
+                action.State.Image,
+                action.State.LinkedIn,
+                action.State.FaceBook,
+                action.State.GitHub,
+                action.State.Instagram,
+                action.State.Twitter,
+                action.State.Youtube,
+                action.State.Description
             );
         }
     }
 
-public static class SocialMediaReducer
-{
-    [ReducerMethod]
-    public static SocialMediaState ReduceSocialMedia(SocialMediaState state, GetSocialMediaState action)
-    {
-        // Return a new instance of the state with the data received from the action
-        return new SocialMediaState(
-            action.State.LinkedIn,
-            action.State.FaceBook,
-            action.State.GitHub,
-            action.State.Instagram,
-            action.State.Twitter,
-            action.State.Youtube
-        );
-    }
+// public static class SocialMediaReducer
+// {
+//     [ReducerMethod]
+//     public static SocialMediaState ReduceSocialMedia(SocialMediaState state, GetSocialMediaState action)
+//     {
+//         // Return a new instance of the state with the data received from the action
+//         return new SocialMediaState(
+//             action.State.LinkedIn,
+//             action.State.FaceBook,
+//             action.State.GitHub,
+//             action.State.Instagram,
+//             action.State.Twitter,
+//             action.State.Youtube
+//         );
+//     }
 
-}
+// }
 
 }

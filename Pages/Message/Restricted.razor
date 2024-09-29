@@ -1,0 +1,85 @@
+@* @page "/restricted" *@
+
+<div class="restricted-page container-fluid d-flex justify-content-center align-items-center" style="height: 100vh; background: #000000;">
+    <div class="text-center neon-container p-5 rounded">
+        <h1 class="neon-title">
+            Access Denied 🚫
+        </h1>
+        <p class="neon-text lead mt-4">
+            Oops! It seems you don’t have access yet.<br /> Log in or create an account to unlock the neon universe!
+        </p>
+        <p class="neon-subtext">
+            Don’t worry, it’ll only take a few seconds 😉
+        </p>
+
+        <div class="mt-5">
+            <a href="/login" class="btn neon-btn me-3">
+                <i class="bi bi-box-arrow-in-right"></i> Log In
+            </a>
+            <a href="/signup" class="btn neon-btn">
+                <i class="bi bi-person-plus-fill"></i> Sign Up
+            </a>
+        </div>
+    </div>
+</div>
+
+@* Neon Styles *@
+<style>
+    /* Page Background */
+/* Gradient cu culori neon */
+.restricted-page {
+    background: radial-gradient(circle at center, rgb(88, 97, 101), rgb(64, 92, 113), rgb(89, 182, 213));
+    font-family: 'Orbitron', sans-serif;
+}
+    
+    /* Neon Container */
+    .neon-container {
+        background: rgba(0, 0, 0, 0.6);
+        border: 2px solid #fff;
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.8), 0 0 50px rgba(0, 255, 255, 0.4);
+        border-radius: 15px;
+        padding: 40px;
+    }
+
+    /* Neon Title */
+    .neon-title {
+        color: #00e5ff;
+        font-size: 3.5rem;
+        text-shadow: 0 0 10px #00e5ff, 0 0 20px #00e5ff, 0 0 40px #00e5ff;
+        margin-bottom: 20px;
+    }
+
+    /* Neon Text */
+    .neon-text {
+        color: #ff80ab;
+        font-size: 1.5rem;
+        text-shadow: 0 0 10px #ff80ab, 0 0 20px #ff80ab, 0 0 30px #ff80ab;
+        margin-bottom: 15px;
+    }
+
+    .neon-subtext {
+        color: #ffeb3b;
+        font-style: italic;
+        text-shadow: 0 0 10px #ffeb3b, 0 0 20px #ffeb3b;
+    }
+
+    /* Neon Buttons */
+    .neon-btn {
+        background-color: transparent;
+        color: #fff;
+        border: 2px solid #18ffff;
+        padding: 15px 30px;
+        font-size: 1.25rem;
+        border-radius: 50px;
+        text-shadow: 0 0 10px #18ffff, 0 0 20px #18ffff;
+        box-shadow: 0 0 20px rgba(24, 255, 255, 0.8), 0 0 30px rgba(24, 255, 255, 0.5);
+        transition: 0.3s ease-in-out;
+    }
+
+    .neon-btn:hover {
+        background-color: #18ffff;
+        color: #000;
+        box-shadow: 0 0 30px rgba(24, 255, 255, 1), 0 0 40px rgba(24, 255, 255, 0.8);
+        transform: scale(1.1);
+    }
+</style>

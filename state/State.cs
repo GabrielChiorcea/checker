@@ -11,6 +11,16 @@ namespace Checker.state
 {
 
 
+    public class ErrorState
+    {
+        public bool HasError { get; } = false;
+
+        public ErrorState(bool haserror)
+        {
+            HasError = haserror;
+        }
+    }
+
 
     public class AuthenticationState
 {
@@ -31,8 +41,15 @@ namespace Checker.state
         public string Occupation { get; set; }
         public string FullName { get; set; }
         public byte[] Image { get; set; }
+        public string LinkedIn { get; set; }
+        public string FaceBook { get; set; }
+        public string GitHub { get; set; }
+        public string Instagram { get; set; }
+        public string Twitter { get; set; }
+        public string Youtube { get; set; }
+        public string Description { get; set; }
 
-        public ProfileCardState(string homeAddress, string country, string county, string occupation, string fullname, byte[] image)
+        public ProfileCardState(string homeAddress, string country, string county, string occupation, string fullname, byte[] image, string linkedIn, string faceBook, string gitHub, string instagram, string twitter, string youtube, string description)
         {
             HomeAddress = homeAddress;
             Country = country;
@@ -40,33 +57,21 @@ namespace Checker.state
             Occupation = occupation;
             Image = image;
             FullName = fullname;
+            LinkedIn = linkedIn;
+            FaceBook = faceBook;
+            GitHub = gitHub;
+            Instagram = instagram;
+            Twitter = twitter;
+            Youtube = youtube;
+            Description = description;
         }
+        
 
         // Parameterless constructor for cases where you want to set properties later
         public ProfileCardState() { }
     }
 
 
-public class SocialMediaState
-{
-        public string LinkedIn { get; }
-        public string FaceBook { get; }
-        public string GitHub { get; }
-        public string Instagram { get; }
-        public string Twitter { get; }
-        public string Youtube { get; }
-
-
-    public SocialMediaState(string linkedIn, string faceBook, string gitHub, string instagram, string twitter, string youtube)
-    {
-        LinkedIn = linkedIn;
-        FaceBook = faceBook;
-        GitHub = gitHub;
-        Instagram = instagram;
-        Twitter = twitter;
-        Youtube = youtube;
-    }
-
-}
+    
 
 }

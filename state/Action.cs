@@ -8,10 +8,20 @@ namespace Checker.state
 {
 
 
-
+public class ErrorAction { }
 public class LoginAction { }
 
 public class LogoutAction { }
+
+
+public class GetErrorState{
+    public string ErrorMessage { get; }
+
+    public GetErrorState(string errorMessage)
+    {
+        ErrorMessage = errorMessage;
+    }
+}
 
 public class GetProfileCardState
 {
@@ -21,18 +31,6 @@ public class GetProfileCardState
     {
         State = state;
     }
-}
-
-
-public class GetSocialMediaState
-{
-    public SocialMediaState State { get; }
-
-    public GetSocialMediaState(SocialMediaState state)
-    {
-        State = state;
-    }
-
 }
 
 }

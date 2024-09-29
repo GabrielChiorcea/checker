@@ -1,12 +1,16 @@
 
 @using Checker.Models
+@using Checker.Services
+@inject ISessionStorageService sessionStorage
+@inject FetchService FetchService
 
 
 @code{
     private SocialMediaModel socialMediaModel = new SocialMediaModel();
 
-    private  void Handler(){
-        Console.WriteLine(socialMediaModel.Description, socialMediaModel.FaceBook);
+    private  async void Handler(){
+        string tocken = await sessionStorage.GetItemAsync("authToken");
+        await FetchService.SetSocialLink(socialMediaModel, tocken);
     }
 }
 
@@ -42,7 +46,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label"><i class="fab fa-fw fa-twitter text-twitter me-2"></i>Twitter</label>
-                            <InputText type="text" class="form-control"  @bind-Value="socialMediaModel.GitHub"/>
+                            <InputText type="text" class="form-control"  @bind-Value="socialMediaModel.Twitter"/>
                         </div>
                         <div data-mdb-input-init class="form-outline mb-4">
                             <label class="form-label" for="textArea">Description</label>   

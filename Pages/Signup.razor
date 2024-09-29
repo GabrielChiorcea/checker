@@ -26,8 +26,6 @@
             {
                 userAndEmailModel.Email = loginModel.email;
                 userAndEmailModel.Username = null;
-                Console.WriteLine(userAndEmailModel.Email);
-
                 var result = await FetchService.checkUserAndEmailForAvailability(userAndEmailModel);
                 if (result.message == "true")
                 {
@@ -86,7 +84,7 @@
             var token = await FetchService.LoginAsync(loginModel);
             loginModel = new LoginModel();
             userAndEmailModel = new UserAndEmailModel();
-            Navigation.NavigateTo("/singup");
+            Navigation.NavigateTo("/");
 
         }
         catch (Exception ex)
