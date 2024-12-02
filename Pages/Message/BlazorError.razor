@@ -1,7 +1,11 @@
-@using Checker.state
+@using Checker.Pages.Message
+@using global::Checker.state
+@using global::Checker.Models 
+@using global::Checker.Services
+@using global::Checker.features
+@using Fluxor
 
-@inject IState<ErrorState> errorState
-
+@inject IState<ErrorState> ErrorState
 
     <div class="error-container">
         <div class="ghost-background"></div>

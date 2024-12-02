@@ -21,7 +21,7 @@ private async void getAll(string token)
     {
         try
         {
-            var response = await FetchService.GetResponsSocialCard("https://backend.gabrielchiorcea.tech/get", token);
+            var response = await FetchService.GetResponsSocialCard($"{AppSettings.ApiBaseUrl}/get", token);
             Dispatcher.Dispatch(new GetProfileCardState(response));
         }
         catch (Exception ex)

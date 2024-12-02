@@ -21,7 +21,7 @@
         string tokenString = await authenticationtocken.GetTocken();
       if(tokenState){
         try{
-          var response = await fetchService.GetResponsSocialCard("https://backend.gabrielchiorcea.tech/get", tokenString);
+          var response = await fetchService.GetResponsSocialCard($"{AppSettings.ApiBaseUrl}/get", tokenString);
           Dispatcher.Dispatch(new GetProfileCardState(response));
         } catch (Exception e) {
           Console.WriteLine(e.Message);

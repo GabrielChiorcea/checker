@@ -26,7 +26,7 @@ namespace Checker.Services
 
         public async Task<JsonModel> LoginAsync(LoginModel loginModel){
 
-            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/creare-cont", loginModel);
+            var response = await _httpClinet.PostAsJsonAsync($"{AppSettings.ApiBaseUrl}/intra-in-cont", loginModel);
             response.EnsureSuccessStatusCode();
              
             var token = await response.Content.ReadFromJsonAsync<JsonModel>();
@@ -36,7 +36,7 @@ namespace Checker.Services
 
         public async Task<SignUpResponseModel> SingUpAsyc(SingUpModel singUpModel){
 
-            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/intra-in-cont", singUpModel);           
+            var response = await _httpClinet.PostAsJsonAsync($"{AppSettings.ApiBaseUrl}/intra-in-cont", singUpModel);           
             response.EnsureSuccessStatusCode();
             var message = await response.Content.ReadFromJsonAsync<SignUpResponseModel>();
                 
@@ -44,7 +44,7 @@ namespace Checker.Services
         }
 
         public async Task<JsonModel> checkUserAndEmailForAvailability(UserAndEmailModel userAndEmail ){
-            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/checkUserAndEmailForAvailability" , userAndEmail);
+            var response = await _httpClinet.PostAsJsonAsync($"{AppSettings.ApiBaseUrl}/checkUserAndEmailForAvailability" , userAndEmail);
             response.EnsureSuccessStatusCode();
 
             var state = await response.Content.ReadFromJsonAsync<JsonModel>();
@@ -56,7 +56,7 @@ namespace Checker.Services
             
             _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/setContactDetail" , profileCard);
+            var response = await _httpClinet.PostAsJsonAsync($"{AppSettings.ApiBaseUrl}/setContactDetail" , profileCard);
             response.EnsureSuccessStatusCode();
 
             var state = await response.Content.ReadFromJsonAsync<JsonModel>();
@@ -67,7 +67,7 @@ namespace Checker.Services
                 
             _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await _httpClinet.PostAsJsonAsync("https://backend.gabrielchiorcea.tech/setSocialLink" , socialMediaModel);
+            var response = await _httpClinet.PostAsJsonAsync($"{AppSettings.ApiBaseUrl}/setSocialLink" , socialMediaModel);
             response.EnsureSuccessStatusCode();
 
             var state = await response.Content.ReadFromJsonAsync<JsonModel>();
