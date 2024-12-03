@@ -26,7 +26,7 @@ namespace Checker.Services
 
         public async Task<JsonModel> LoginAsync(LoginModel loginModel){
 
-            var response = await _httpClinet.PostAsJsonAsync($"{AppSettings.ApiBaseUrl}/intra-in-cont", loginModel);
+            var response = await _httpClinet.PostAsJsonAsync($"{AppSettings.ApiBaseUrl}/creare-cont", loginModel);
             response.EnsureSuccessStatusCode();
              
             var token = await response.Content.ReadFromJsonAsync<JsonModel>();

@@ -8,7 +8,7 @@ namespace Checker.Models
 {
     public class ProfileCardModel
     {
-        public byte[] Image { get; set; }
+        public byte[] Image { get; set; } 
         public string Occupation { get; set; }
         public string HomeAddress { get; set; }
         public string Country { get; set; }
