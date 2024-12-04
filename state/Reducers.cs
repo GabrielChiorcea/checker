@@ -31,6 +31,7 @@ namespace Checker.state
                 action.State.County,
                 action.State.Occupation,
                 action.State.FullName,
+                action.State.Email,            
                 action.State.Image,
                 action.State.LinkedIn,
                 action.State.FaceBook,

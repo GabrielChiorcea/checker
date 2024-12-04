@@ -43,6 +43,7 @@
         try{   
             var response = await fetchService.GetResponsSocialCard($"{AppSettings.ApiBaseUrl}/get", tokenString);
             Dispatcher.Dispatch(new GetProfileCardState(response));
+            Console.WriteLine(response);
         if(response != null){//daca raspunsul este diferit de null, se seteaza isLoading pe false
           isLoading = false;//isLoading este setat pe false, pentru a nu mai afisa componenta BlazorChecking
           }else{

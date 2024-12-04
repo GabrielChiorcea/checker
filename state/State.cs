@@ -40,6 +40,7 @@ namespace Checker.state
         public string County { get; set; }
         public string Occupation { get; set; }
         public string FullName { get; set; }
+        public string Email { get; set; }
         public byte[] Image { get; set; }
         public string LinkedIn { get; set; }
         public string FaceBook { get; set; }
@@ -49,7 +50,7 @@ namespace Checker.state
         public string Youtube { get; set; }
         public string Description { get; set; }
 
-        public ProfileCardState(string homeAddress, string country, string county, string occupation, string fullname, byte[] image, string linkedIn, string faceBook, string gitHub, string instagram, string twitter, string youtube, string description)
+        public ProfileCardState(string homeAddress, string country, string county, string occupation, string fullname, string email, byte[] image, string linkedIn, string faceBook, string gitHub, string instagram, string twitter, string youtube, string description)
         {
             HomeAddress = homeAddress;
             Country = country;
@@ -57,6 +58,7 @@ namespace Checker.state
             Occupation = occupation;
             Image = image;
             FullName = fullname;
+            Email = email;
             LinkedIn = linkedIn;
             FaceBook = faceBook;
             GitHub = gitHub;

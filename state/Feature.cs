@@ -9,7 +9,7 @@ namespace Checker.state
 
         protected override ProfileCardState GetInitialState() =>
             new ProfileCardState(
-                string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, new byte[0], 
+                string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, new byte[0], 
                 string.Empty,  string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 
                 string.Empty
                 );

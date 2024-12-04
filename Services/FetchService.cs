@@ -98,6 +98,17 @@ namespace Checker.Services
                 
         }
 
+    public async Task<HttpResponseMessage> DeleteAccountAsync(string url, string token)
+    {
+        _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        using HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Delete, url);
+
+        HttpResponseMessage response = await _httpClinet.SendAsync(req);
+        response.EnsureSuccessStatusCode();
+        return response;
+    }
+
     }
 
     
