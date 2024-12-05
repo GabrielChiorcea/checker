@@ -1,15 +1,14 @@
 @page "/admin"
-@using Checker.Pages
-@using Checker.Services
 @using Checker.Pages.Message
 @using global::Checker.state
 @using global::Checker.Models 
+@using global::Checker.Services
 @using global::Checker.features
 @using Fluxor
-@inject ISessionStorageService sessionStorage
 @inject FetchService FetchService
-@inject IJSRuntime JS
-@inject NavigationManager NavigationManager  
+@inject NavigationManager NavigationManager
+@inject ISessionStorageService sessionStorage
+
 
 <div class="scrollable-container">
     <div class="container account-settings">
@@ -23,10 +22,10 @@
                         <h4>Change Username</h4>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form @onsubmit="HandelChangeUserName">
                             <div class="mb-3">
                                 <label for="username" class="form-label">New Username</label>
-                                <input type="text" class="form-control" id="username" placeholder="Enter new username">
+                                <input type="text" class="form-control" id="username" @bind=userName placeholder="Enter new username">
                             </div>
                             <button class="btn btn-primary w-100">Update Username</button>
                         </form>
@@ -34,7 +33,7 @@
                 </div>
             </div>
 
-            <!-- Change Email -->
+             <!-- Change Email -->
             <div class="col-md-6 mb-4">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">
@@ -52,44 +51,58 @@
                 </div>
             </div>
 
-            <div class="card-header bg-warning text-white">
-                <h4>Change Password</h4>
-            </div>
-            <div class="card-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="currentPassword" class="form-label">Current Password</label>
-                        <input type="password" class="form-control" id="currentPassword" placeholder="Enter current password">
+            <!-- Change Password -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-warning text-white">
+                        <h4>Change Password</h4>
                     </div>
-                    <div class="mb-3">
-                        <label for="newPassword" class="form-label">New Password</label>
-                        <input type="password" class="form-control" id="newPassword" placeholder="Enter new password">
+                    <div class="card-body">
+                        <form @onsubmit="HandleChangePassword">
+                            <div class="mb-3">
+                                <label for="currentPassword" class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="currentPassword" @bind="currentPassword" placeholder="Enter current password">
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPassword" @bind="newPassword" placeholder="Enter new password">
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" @bind="confirmPassword" placeholder="Confirm new password">
+                            </div>
+                            <button type="submit" class="btn btn-warning w-100">Change Password</button>
+                        </form>
                     </div>
-                    <div class="mb-3">
-                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm new password">
-                    </div>
-                    <button class="btn btn-warning w-100">Change Password</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Account Actions -->
-        <div class="col-md-6 mb-4">
-            <div class="card shadow">
-                <div class="card-header bg-danger text-white">
-                    <h4>Danger Zone</h4>
                 </div>
-                <div class="card-body">
-                    <form @onsubmit="HandleSubmit">
-                        <button type="submit" class="btn btn-danger w-100 mb-3">Delete Account</button>
-                        <button type="button" class="btn btn-secondary w-100" @onclick="DeleteToken">Logout</button>
-                    </form>
+            </div>
+
+            <!-- Account Actions -->
+            <div class="col-md-6 mb-4">
+                <div class="card shadow">
+                    <div class="card-header bg-danger text-white">
+                        <h4>Danger Zone</h4>
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            <button type="submit" class="btn btn-danger w-100 mb-3" @onclick="ShowConfirmDelete">Delete Account</button>
+                            <button type="button" class="btn btn-secondary w-100" @onclick="DeleteToken">Logout</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<form @onsubmit="HandleSubmit" class="modal" style="@(showConfirmDelete ? "display:block" : "display:none")">
+    <div class="modal-content">
+        <span class="close" @onclick="HideConfirmDelete">&times;</span>
+        <p>Are you sure you want to delete your account? All data will be deleted.</p>
+        <button type="button" class="btn btn-danger" @onclick="DeleteAccount">Yes, Delete</button>
+        <button type="button" class="btn btn-secondary" @onclick="HideConfirmDelete">Cancel</button>
+    </div>
+</form>
 
 <style>
     .scrollable-container {
@@ -202,19 +215,161 @@
         z-index: -2;
         animation: starTwinkle 2s infinite;
     }
+
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 </style>
 
 @code {
-    private async Task HandleSubmit(EventArgs e)
+    private bool showConfirmDelete = false;
+    private string currentPassword;
+    private string newPassword;
+    private string confirmPassword;
+    private string userName;
+
+    private void ShowConfirmDelete()
     {
-        //e.PreventDefault();
+        showConfirmDelete = true;
+    }
+
+    private void HideConfirmDelete()
+    {
+        showConfirmDelete = false;
+    }
+
+    private async Task HandleSubmit()
+    {
         await DeleteAccount();
     }
 
     private async Task DeleteAccount()
     {
-        string tocken = await sessionStorage.GetItemAsync("authToken");
-        await FetchService.DeleteAccountAsync($"{AppSettings.ApiBaseUrl}/deleteAccount", tocken);
+        try
+        {
+            string token = await sessionStorage.GetItemAsync("authToken");
+            var response = await FetchService.DeleteAccountAsync($"{AppSettings.ApiBaseUrl}/deleteAccount", token);
+            if (response.IsSuccessStatusCode)
+            {
+                // Handle successful account deletion
+                @* NavigationManager.NavigateTo("/account-deleted"); *@
+                sessionStorage.RemoveItemAsync("authToken");
+                NavigationManager.NavigateTo("/");
+
+            }
+            else
+            {
+                // Handle unsuccessful account deletion
+                // You can show an error message to the user here
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions
+            // You can log the exception and show an error message to the user here
+        }
+        finally
+        {
+            showConfirmDelete = false;
+        }
+    }
+
+    private async Task HandleChangePassword()
+    {
+        if (newPassword != confirmPassword)
+        {
+            // Show an error message to the user
+            return;
+        }
+
+        try
+        {
+            string token = await sessionStorage.GetItemAsync("authToken");
+            var changePasswordModel = new ChangePasswordModel
+            {
+                CurrentPassword = currentPassword,
+                NewPassword = newPassword
+            };
+            var response = await FetchService.ChangePasswordAsync(changePasswordModel, token);
+            if (response.message == "Password changed successfully")
+            {
+                // Handle successful password change
+            }
+            else
+            {
+                // Handle unsuccessful password change
+                // You can show an error message to the user here
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions
+            // You can log the exception and show an error message to the user here
+        } 
+    }
+
+
+    private async Task HandelChangeUserName()
+    {
+
+        UserNameChangeModel userNameChangeModel = new UserNameChangeModel
+        {
+            UserName = userName
+        };
+
+        try
+        {
+                
+
+
+            string token = await sessionStorage.GetItemAsync("authToken");
+            var response = await FetchService.ChangeUserNameAsync(userNameChangeModel, token);
+            if (response.message == "Username changed successfully")
+            {
+                // Handle successful username change
+            }
+            else
+            {
+                // Handle unsuccessful username change
+                // You can show an error message to the user here
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions
+            // You can log the exception and show an error message to the user here
+        }
     }
 
     private void DeleteToken()

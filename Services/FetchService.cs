@@ -109,7 +109,35 @@ namespace Checker.Services
         return response;
     }
 
+
+
+    public async Task<JsonModel> ChangePasswordAsync(ChangePasswordModel changePasswordModel, string token)
+    {
+        _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClinet.PostAsJsonAsync($"{AppSettings.ApiBaseUrl}/changePassword", changePasswordModel);
+        response.EnsureSuccessStatusCode();
+
+        var state = await response.Content.ReadFromJsonAsync<JsonModel>();
+
+        return state;
     }
 
+
+    public async Task<JsonModel> ChangeUserNameAsync(UserNameChangeModel userNameChangeModel, string token)
+    {
+        _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClinet.PostAsJsonAsync($"{AppSettings.ApiBaseUrl}/changeUsername", userNameChangeModel);
+        response.EnsureSuccessStatusCode();
+
+        var state = await response.Content.ReadFromJsonAsync<JsonModel>();
+
+        return state;
+
+    }
+
+
+    }
     
 }

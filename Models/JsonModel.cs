@@ -19,4 +19,8 @@ namespace Checker.Models
         public string Code { get; set; }
         public string Message { get; set; }
     }
+
+    public class UserNameChangeModel {
+        public string UserName { get; set; } = "";
+    }
 }
