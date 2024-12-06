@@ -137,7 +137,18 @@ namespace Checker.Services
 
     }
 
+    public async Task<JsonModel> ChangeEmailAsync(EmailChangeModel emailChangeModel, string token)
+    {
+        _httpClinet.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var response = await _httpClinet.PostAsJsonAsync($"{AppSettings.ApiBaseUrl}/changeEmail", emailChangeModel);
+        response.EnsureSuccessStatusCode();
+
+        var state = await response.Content.ReadFromJsonAsync<JsonModel>();
+
+        return state;
+
 
     }
-    
+    }
 }

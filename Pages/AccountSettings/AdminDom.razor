@@ -40,10 +40,10 @@
                         <h4>Change Email</h4>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form @onsubmit='HandelChangeNewEmail'>
                             <div class="mb-3">
                                 <label for="email" class="form-label">New Email Address</label>
-                                <input type="email" class="form-control" id="email" placeholder="Enter new email">
+                                <input type="email" class="form-control" id="email" @bind='newEmail' placeholder="Enter new email">
                             </div>
                             <button class="btn btn-primary w-100">Update Email</button>
                         </form>
@@ -258,6 +258,7 @@
     private string newPassword;
     private string confirmPassword;
     private string userName;
+    private string newEmail;
 
     private void ShowConfirmDelete()
     {
@@ -362,6 +363,35 @@
             else
             {
                 // Handle unsuccessful username change
+                // You can show an error message to the user here
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exceptions
+            // You can log the exception and show an error message to the user here
+        }
+    }
+
+
+    private async Task HandelChangeNewEmail()
+    {
+        EmailChangeModel emailChangeModel = new EmailChangeModel
+        {
+            NewEmail = newEmail
+        };
+
+        try
+        {
+            string token = await sessionStorage.GetItemAsync("authToken");
+            var response = await FetchService.ChangeEmailAsync(emailChangeModel, token);
+            if (response.message == "Email changed successfully")
+            {
+                // Handle successful email change
+            }
+            else
+            {
+                // Handle unsuccessful email change
                 // You can show an error message to the user here
             }
         }
