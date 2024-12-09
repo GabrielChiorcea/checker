@@ -23,9 +23,14 @@
       <div class="col-lg-4">
         <div class="card mb-4">
           <div class="card-body text-center">
-            @* <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-              class="rounded-circle img-fluid" style="width: 150px;"> *@
-            <img class="rounded-circle img-fluid profile-img"  src="data:image/png;base64,@(Convert.ToBase64String(ProfileCardState.Value.Image))" alt="Profile Image"  />
+
+            @if( Convert.ToBase64String(ProfileCardState.Value.Image) == "")
+            {
+              <img class="rounded-circle img-fluid profile-img"  src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="Profile Image"  />
+              }
+            else{
+              <img class="rounded-circle img-fluid profile-img"  src="data:image/png;base64,@(Convert.ToBase64String(ProfileCardState.Value.Image))" alt="Profile Image"  />
+            }
 
             <h5 class="my-3">@(ProfileCardState.Value.FullName)</h5>
             <p class="text-muted mb-1">@(ProfileCardState.Value.Occupation)</p>
