@@ -17,8 +17,8 @@
 
     @if(isLoading){ //daca isLoading este true, se afiseaza componenta BlazorChecking
         <BlazorChecking/>//componenta BlazorChecking este o componenta care afiseaza un mesaj de incarcare
-    } else if(tokenState){//daca tokenState este true, se afiseaza componenta ProfileDom
-        <AdminDom/>//componenta ProfileDom este o componenta care afiseaza datele utilizatorului
+    } else if(true){//daca tokenState este true, se afiseaza componenta ProfileDom
+        <AdminDom/>
     }else{
         <Restricted/> //daca tokenState este false, se afiseaza componenta Restricted 
     }

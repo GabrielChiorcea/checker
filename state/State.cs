@@ -21,6 +21,8 @@ namespace Checker.state
         }
     }
 
+    
+
 
     public class AuthenticationState
 {
@@ -73,7 +75,19 @@ namespace Checker.state
         public ProfileCardState() { }
     }
 
+    public class ModalState
+    {
+        public string Message { get; } 
+        public string Title { get; } 
+        public bool ShowModal { get; }
 
+        public ModalState( string title, string message, bool showModal)
+        {
+            Message = message;
+            Title = title;
+            ShowModal = showModal;
+        }
+    }
     
 
 }

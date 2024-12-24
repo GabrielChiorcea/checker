@@ -1,0 +1,42 @@
+@using Checker.Pages.Message
+@using global::Checker.state
+@using global::Checker.Models 
+@using global::Checker.Services
+@using global::Checker.features
+@using Fluxor
+
+@inject IState<ModalState> ModalState
+@inject IDispatcher Dispatcher
+
+
+    <div class="modal" tabindex="-1" 
+    style="@(!showModal ? "display:block" : "display:none")">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" 
+                    style="background-color:@(ModalState.Value.Title == "Error" ? "rgba(255, 0, 0, 0.5)" : "rgba(0, 255, 0, 0.5)")">
+
+                    <h5 class="modal-title">@ModalState.Value.Title</h5>
+                    <button type="button" @onclick="HideModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>@ModalState.Value.Message</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" @onclick="HideModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@code {
+
+    public bool showModal = false;
+    private void HideModal()
+    {
+        var modalState = new ModalState("", "", false);
+        Dispatcher.Dispatch(new GetModalState(modalState));
+        showModal = true;
+    }
+}

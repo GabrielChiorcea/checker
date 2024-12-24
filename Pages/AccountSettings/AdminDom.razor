@@ -1,4 +1,5 @@
 @page "/admin"
+
 @using Checker.Pages.Message
 @using global::Checker.state
 @using global::Checker.Models 
@@ -8,6 +9,8 @@
 @inject FetchService FetchService
 @inject NavigationManager NavigationManager
 @inject ISessionStorageService sessionStorage
+@inject IState<ModalState> ModalState
+@inject IDispatcher Dispatcher
 
 
 <div class="scrollable-container">
@@ -17,7 +20,7 @@
         <div class="row">
             <!-- Change Username -->
             <div class="col-md-6 mb-4">
-                <div class="card shadow">
+                <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <h4>Change Username</h4>
                     </div>
@@ -33,9 +36,9 @@
                 </div>
             </div>
 
-             <!-- Change Email -->
+            <!-- Change Email -->
             <div class="col-md-6 mb-4">
-                <div class="card shadow">
+                <div class="card shadow-sm">
                     <div class="card-header bg-primary text-white">
                         <h4>Change Email</h4>
                     </div>
@@ -53,7 +56,7 @@
 
             <!-- Change Password -->
             <div class="col-md-6 mb-4">
-                <div class="card shadow">
+                <div class="card shadow-sm">
                     <div class="card-header bg-warning text-white">
                         <h4>Change Password</h4>
                     </div>
@@ -79,9 +82,9 @@
 
             <!-- Account Actions -->
             <div class="col-md-6 mb-4">
-                <div class="card shadow">
+                <div class="card shadow-sm">
                     <div class="card-header bg-danger text-white">
-                        <h4>Danger Zone</h4>
+                        <h4>Logout</h4>
                     </div>
                     <div class="card-body">
                         <div>
@@ -95,162 +98,49 @@
     </div>
 </div>
 
-<form @onsubmit="HandleSubmit" class="modal" style="@(showConfirmDelete ? "display:block" : "display:none")">
+<form class="modal" tabindex="-1" @onsubmit="HandleSubmit"  
+style="@(showConfirmDelete ? "display:block" : "display:none")">
+  <div class="modal-dialog">
     <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delete account</h5>
         <span class="close" @onclick="HideConfirmDelete">&times;</span>
+      </div>
+      <div class="modal-body">
         <p>Are you sure you want to delete your account? All data will be deleted.</p>
-        <button type="button" class="btn btn-danger" @onclick="DeleteAccount">Yes, Delete</button>
+      </div>
+      <div class="modal-footer">
         <button type="button" class="btn btn-secondary" @onclick="HideConfirmDelete">Cancel</button>
+        <button type="button" class="btn btn-danger" @onclick="DeleteAccount">Yes, Delete</button>
+      </div>
     </div>
+  </div>
+
 </form>
 
-<style>
-    .scrollable-container {
-        overflow: auto; /* Ensure the container can scroll */
-        max-height: 100vh; /* Set a maximum height for the container */
-    }
 
-    body {
-        background: radial-gradient(circle at center, #000 20%, #0d0d0d 100%);
-        color: #fff;
-        font-family: 'Roboto', sans-serif;
-        min-height: 100vh;
-        margin: 0;
-        overflow: hidden;
-    }
+<div class="modal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Error</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-    /* Cer înstelat */
-    body::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: url('https://www.transparenttextures.com/patterns/dark-matter.png');
-        opacity: 0.2;
-        z-index: -1;
-    }
+@if(ModalState.Value.ShowModal)
+{
+    <Modal />
+}
 
-    /* Container general */
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-
-    /* Stil pentru secțiuni */
-    .section {
-        background-color: rgba(0, 0, 0, 0.8);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
-    }
-
-    /* Stiluri neon pentru etichete */
-    .label {
-        color: #0ff;
-        font-size: 1.2em;
-        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-    }
-
-    /* Inputurile cu stil neon */
-    input[type="text"], input[type="email"], input[type="password"], .form-control {
-        background: transparent;
-        border: 1px solid #0ff;
-        color: #fff;
-        padding: 12px;
-        border-radius: 10px;
-        width: 100%;
-        transition: 0.3s;
-        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-    }
-
-    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
-        outline: none;
-        border-color: #ff00ff;
-        box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
-    }
-
-    /* Butoane neon */
-    button, .btn {
-        background-color: #0ff;
-        color: #000;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 50px;
-        transition: 0.3s;
-        box-shadow: 0 4px 10px rgba(0, 255, 255, 0.4);
-        cursor: pointer;
-    }
-
-    button:hover, .btn:hover {
-        background-color: #ff00ff;
-        box-shadow: 0 4px 20px rgba(255, 0, 255, 0.6);
-    }
-
-    /* Stiluri pentru secțiuni speciale (logout, delete account) */
-    .logout-section, .delete-section {
-        background-color: rgba(255, 0, 0, 0.1);
-        border: 1px solid rgba(255, 0, 0, 0.5);
-        box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-    }
-
-    /* Titluri cu stiluri neon */
-    h2, h4 {
-        color: #fff;
-        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-    }
-
-    body::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: transparent url('https://www.transparenttextures.com/patterns/stardust.png');
-        z-index: -2;
-        animation: starTwinkle 2s infinite;
-    }
-
-    .modal {
-        display: none; /* Hidden by default */
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0,0.4);
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-</style>
 
 @code {
     private bool showConfirmDelete = false;
@@ -283,22 +173,17 @@
             var response = await FetchService.DeleteAccountAsync($"{AppSettings.ApiBaseUrl}/deleteAccount", token);
             if (response.IsSuccessStatusCode)
             {
-                // Handle successful account deletion
-                @* NavigationManager.NavigateTo("/account-deleted"); *@
                 sessionStorage.RemoveItemAsync("authToken");
                 NavigationManager.NavigateTo("/");
-
             }
             else
             {
-                // Handle unsuccessful account deletion
-                // You can show an error message to the user here
+                
             }
         }
         catch (Exception ex)
         {
-            // Handle exceptions
-            // You can log the exception and show an error message to the user here
+            Dispatcher.Dispatch(new GetModalState(new ModalState("Error", "An error ocuured while procesing the data", true)));
         }
         finally
         {
@@ -325,25 +210,19 @@
             var response = await FetchService.ChangePasswordAsync(changePasswordModel, token);
             if (response.message == "Password changed successfully")
             {
-                // Handle successful password change
+            Dispatcher.Dispatch(new GetModalState(new ModalState("Succes", "Data is cgnaged with succes", true)));
             }
-            else
-            {
-                // Handle unsuccessful password change
-                // You can show an error message to the user here
-            }
+
         }
         catch (Exception ex)
         {
-            // Handle exceptions
-            // You can log the exception and show an error message to the user here
+            Dispatcher.Dispatch(new GetModalState(new ModalState("Error", "An error ocuured while procesing the data", true)));
+
         } 
     }
 
-
     private async Task HandelChangeUserName()
     {
-
         UserNameChangeModel userNameChangeModel = new UserNameChangeModel
         {
             UserName = userName
@@ -351,28 +230,19 @@
 
         try
         {
-                
-
-
             string token = await sessionStorage.GetItemAsync("authToken");
             var response = await FetchService.ChangeUserNameAsync(userNameChangeModel, token);
             if (response.message == "Username changed successfully")
             {
-                // Handle successful username change
+            Dispatcher.Dispatch(new GetModalState(new ModalState("Succes", "Data is cgnaged with succes", true)));
             }
-            else
-            {
-                // Handle unsuccessful username change
-                // You can show an error message to the user here
-            }
+
         }
         catch (Exception ex)
         {
-            // Handle exceptions
-            // You can log the exception and show an error message to the user here
+                Dispatcher.Dispatch(new GetModalState(new ModalState("Error", "An error ocuured while procesing the data", true)));
         }
     }
-
 
     private async Task HandelChangeNewEmail()
     {
@@ -387,18 +257,13 @@
             var response = await FetchService.ChangeEmailAsync(emailChangeModel, token);
             if (response.message == "Email changed successfully")
             {
-                // Handle successful email change
+            Dispatcher.Dispatch(new GetModalState(new ModalState("Succes", "Data is cgnaged with succes", true)));
             }
-            else
-            {
-                // Handle unsuccessful email change
-                // You can show an error message to the user here
-            }
+ 
         }
         catch (Exception ex)
         {
-            // Handle exceptions
-            // You can log the exception and show an error message to the user here
+                Dispatcher.Dispatch(new GetModalState(new ModalState("Error", "An error ocuured while procesing the data", true)));
         }
     }
 
@@ -415,3 +280,114 @@
     }
 }
 
+
+
+
+<style>
+
+
+    .scrollable-container {
+        overflow: auto;
+        max-height: 100vh;
+    }
+
+    body {
+        background: #f8f9fa;
+        color: #212529;
+        font-family: 'Roboto', sans-serif;
+        min-height: 100vh;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .btn {
+        border-radius: 5px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border: none;
+        color: #212529;
+    }
+
+    .btn-warning:hover {
+        background-color: #e0a800;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+        color: #fff;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        color: #fff;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .modal {
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>

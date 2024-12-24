@@ -14,6 +14,9 @@ public class LoginAction { }
 public class LogoutAction { }
 
 
+
+
+
 public class GetErrorState{
     public string ErrorMessage { get; }
 
@@ -32,5 +35,18 @@ public class GetProfileCardState
         State = state;
     }
 }
+
+ 
+
+    public class GetModalState
+    {
+        public ModalState State { get; }
+
+        public GetModalState(ModalState state)
+        {
+            State = state;
+        }
+    }
+
 
 }

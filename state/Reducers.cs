@@ -20,6 +20,13 @@ namespace Checker.state
         public static ErrorState ReduceGetErrorState(ErrorState state, ErrorAction action) => new ErrorState(true);
     }
 
+    public static class ModalReducer
+    {
+        [ReducerMethod]
+        public static ModalState ReducerModal(ModalState state, GetModalState action) => new ModalState(action.State.Title, action.State.Message, action.State.ShowModal);
+
+    }
+
  public static class ProfileCardReducer
     {
         [ReducerMethod]

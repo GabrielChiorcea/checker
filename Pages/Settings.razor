@@ -1,6 +1,80 @@
 @page "/settings"
+
 @using Checker
 @using Checker.Pages.AccountSettings
+@using Checker.Pages.Message
+@using global::Checker.state
+@using global::Checker.Models 
+@using global::Checker.Services
+@using global::Checker.features
+@using Fluxor
+@inject AuthenticationTocken authenticationtocken
+@inject IState<ProfileCardState> ProfileCardState
 
-<ProfileCard/>
-<SocialMedia/>
+@inject FetchService fetchService
+@inject IDispatcher Dispatcher
+
+@if(error == false)
+{
+    @if(isLoading)
+    {
+        <BlazorChecking/>
+    }
+    else if(tokenState)
+    {
+        <ProfileCard/>
+        <SocialMedia/>
+    }
+    else
+    {
+        <Restricted/>
+    }
+}
+else
+{
+    <BlazorError/>
+}
+
+@code{
+    bool isLoading = true;
+    bool error = false;
+    bool tokenState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tokenState = await authenticationtocken.Check();
+        
+        if(!string.IsNullOrEmpty(ProfileCardState.Value.FullName))
+        {
+            isLoading = false;
+            return;
+        }
+
+        string tokenString = await authenticationtocken.GetTocken();
+        if(tokenState)
+        {
+            try
+            {   
+                var response = await fetchService.GetResponsSocialCard($"{AppSettings.ApiBaseUrl}/get", tokenString);
+                Dispatcher.Dispatch(new GetProfileCardState(response));
+                if(response != null)
+                {
+                    isLoading = false;
+                }
+                else
+                {
+                    throw new Exception("eroare");
+                }
+            }
+            catch (Exception)
+            {
+                error = true;
+                return;
+            }
+        }
+        else
+        {
+            isLoading = false;
+        }
+    }
+}

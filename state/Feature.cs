@@ -1,4 +1,3 @@
-
 using Fluxor;
 
 namespace Checker.state
@@ -13,6 +12,19 @@ namespace Checker.state
                 string.Empty,  string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, 
                 string.Empty
                 );
+    }
+
+
+    public class ModalFeature : Feature<ModalState>
+    {
+        public override string GetName() => "Modal";
+
+        protected override ModalState GetInitialState() =>
+            new ModalState(
+                title: string.Empty,
+                message: string.Empty,            
+                showModal: false
+            );
     }
 
 }
