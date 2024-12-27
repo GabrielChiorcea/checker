@@ -10,6 +10,7 @@
 @using Fluxor
 @inject AuthenticationTocken authenticationtocken
 @inject IState<ProfileCardState> ProfileCardState
+@inject IState<ModalState> ModalState
 
 @inject FetchService fetchService
 @inject IDispatcher Dispatcher
@@ -20,7 +21,7 @@
     {
         <BlazorChecking/>
     }
-    else if(tokenState)
+    else if(tokenState) //tokenState
     {
         <ProfileCard/>
         <SocialMedia/>

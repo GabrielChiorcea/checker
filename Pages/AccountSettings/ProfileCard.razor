@@ -1,4 +1,5 @@
 @page "/user-profile"
+@using global::Checker.Pages.Message
 @using global::Checker.Services
 @using global::Checker.state
 @using global::Checker.Models 
@@ -6,6 +7,13 @@
 @using System.IO
 @using Microsoft.AspNetCore.Components.Forms
 @inject ISessionStorageService sessionStorage
+
+@inject IState<ModalState> ModalState
+@inject IDispatcher Dispatcher
+
+
+
+
 
 @code {
     private ProfileCardModel profileCardModel = new ProfileCardModel();
@@ -15,8 +23,13 @@
             try{
                 string tocken = await sessionStorage.GetItemAsync("authToken");
                 var profilecard = await FetchService.SetContactDetail(profileCardModel, tocken);
+                Dispatcher.Dispatch(new GetModalState(new ModalState("Succes", "Data is changed with success", true)));
+
             }catch(Exception e){
-                Console.WriteLine(e);
+                Dispatcher.Dispatch(new GetModalState(new ModalState("Error", "An error ocuured while procesing the data", true)));
+            }
+            finally{
+                profileCardModel = new ProfileCardModel();
             }
     }
 
@@ -31,6 +44,10 @@
         }
     }
 }
+
+
+
+
 
 <EditForm Model="profileCardModel" OnValidSubmit="Handler" class="file-upload">
     <DataAnnotationsValidator />
@@ -73,22 +90,27 @@
                 }
             </div>
             <InputFile OnChange="HandleImageChange" type="file" id="customFile" name="file" hidden />
-            <label class="btn btn-primary" for="customFile">Upload</label>
-            <button type="button" class="btn btn-danger-soft mt-3">Remove</button>
+            <label class="btn-profile btn-primary" for="customFile">Upload</label>
+            <button type="button" class="btn-profile btn-danger-soft mt-3">Remove</button>
             <p class="text-muted mt-3 mb-0"><span class="me-1">Note:</span>Minimum size 300px x 300px</p>
         </div>
     </div>
     <div class=" d-flex justify-content-center" >
-    <button class="btn btn-primary mt-4" type="submit">Update contact details</button>
+    <button class="btn-profile btn-primary mt-4" type="submit">Update contact details</button>
     </div>
     
 </EditForm>
 
 
+        @if(ModalState.Value.ShowModal)
+        {
+            <Modal/>
+        }
 
+        
 <style>
 
-input[type="text"], input[type="file"], .btn {
+input[type="text"], input[type="file"], .btn-profile {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.1));
     border: 1px solid rgb(20 2 2 / 50%);
     padding: 12px 20px;
@@ -106,7 +128,7 @@ input[type="text"]:focus, input[type="file"]:focus {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.15));
 }
 
-.btn {
+.btn-profile {
     background-color: rgba(0, 123, 255, 0.7); /* Albastru semi-transparent */
     border-radius: 30px;
     padding: 12px 30px;
@@ -116,7 +138,7 @@ input[type="text"]:focus, input[type="file"]:focus {
     box-shadow: 0 6px 15px rgba(0, 123, 255, 0.3); /* Umbra albastră discretă */
 }
 
-.btn:hover {
+.btn-profile:hover {
     background-color: rgba(0, 123, 255, 0.9);
     box-shadow: 0 6px 20px rgba(0, 123, 255, 0.5); /* Umbra mai pronunțată la hover */
 }

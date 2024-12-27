@@ -119,22 +119,7 @@ style="@(showConfirmDelete ? "display:block" : "display:none")">
 </form>
 
 
-<div class="modal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Error</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 @if(ModalState.Value.ShowModal)
 {
@@ -176,10 +161,7 @@ style="@(showConfirmDelete ? "display:block" : "display:none")">
                 sessionStorage.RemoveItemAsync("authToken");
                 NavigationManager.NavigateTo("/");
             }
-            else
-            {
-                
-            }
+            
         }
         catch (Exception ex)
         {
@@ -195,7 +177,7 @@ style="@(showConfirmDelete ? "display:block" : "display:none")">
     {
         if (newPassword != confirmPassword)
         {
-            // Show an error message to the user
+            Dispatcher.Dispatch(new GetModalState(new ModalState("Error", "An error ocuured while procesing the data", true)));
             return;
         }
 
@@ -210,7 +192,7 @@ style="@(showConfirmDelete ? "display:block" : "display:none")">
             var response = await FetchService.ChangePasswordAsync(changePasswordModel, token);
             if (response.message == "Password changed successfully")
             {
-            Dispatcher.Dispatch(new GetModalState(new ModalState("Succes", "Data is cgnaged with succes", true)));
+            Dispatcher.Dispatch(new GetModalState(new ModalState("Succes", "Data is changed with success", true)));
             }
 
         }
@@ -234,7 +216,7 @@ style="@(showConfirmDelete ? "display:block" : "display:none")">
             var response = await FetchService.ChangeUserNameAsync(userNameChangeModel, token);
             if (response.message == "Username changed successfully")
             {
-            Dispatcher.Dispatch(new GetModalState(new ModalState("Succes", "Data is cgnaged with succes", true)));
+            Dispatcher.Dispatch(new GetModalState(new ModalState("Succes", "Data is changed with success", true)));
             }
 
         }
@@ -257,7 +239,7 @@ style="@(showConfirmDelete ? "display:block" : "display:none")">
             var response = await FetchService.ChangeEmailAsync(emailChangeModel, token);
             if (response.message == "Email changed successfully")
             {
-            Dispatcher.Dispatch(new GetModalState(new ModalState("Succes", "Data is cgnaged with succes", true)));
+            Dispatcher.Dispatch(new GetModalState(new ModalState("Succes", "Data is changed with success", true)));
             }
  
         }
